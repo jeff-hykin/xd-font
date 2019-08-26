@@ -1,0 +1,54 @@
+
+@font-face {
+	font-family: 'Iosevka Custom Web';
+	font-weight: 400;
+	font-style: normal;
+	src: url('woff2/iosevka-custom-regular.woff2') format('woff2'), url('woff/iosevka-custom-regular.woff') format('woff'), url('ttf/iosevka-custom-regular.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Iosevka Custom Web';
+	font-weight: 400;
+	font-style: italic;
+	src: url('woff2/iosevka-custom-italic.woff2') format('woff2'), url('woff/iosevka-custom-italic.woff') format('woff'), url('ttf/iosevka-custom-italic.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Iosevka Custom Web';
+	font-weight: 400;
+	font-style: oblique;
+	src: url('woff2/iosevka-custom-oblique.woff2') format('woff2'), url('woff/iosevka-custom-oblique.woff') format('woff'), url('ttf/iosevka-custom-oblique.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Iosevka Custom Web Oblique';
+	font-weight: 400;
+	src: url('woff2/iosevka-custom-oblique.woff2') format('woff2'), url('woff/iosevka-custom-oblique.woff') format('woff'), url('ttf/iosevka-custom-oblique.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Iosevka Custom Web';
+	font-weight: 700;
+	font-style: normal;
+	src: url('woff2/iosevka-custom-bold.woff2') format('woff2'), url('woff/iosevka-custom-bold.woff') format('woff'), url('ttf/iosevka-custom-bold.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Iosevka Custom Web';
+	font-weight: 700;
+	font-style: italic;
+	src: url('woff2/iosevka-custom-bolditalic.woff2') format('woff2'), url('woff/iosevka-custom-bolditalic.woff') format('woff'), url('ttf/iosevka-custom-bolditalic.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Iosevka Custom Web';
+	font-weight: 700;
+	font-style: oblique;
+	src: url('woff2/iosevka-custom-boldoblique.woff2') format('woff2'), url('woff/iosevka-custom-boldoblique.woff') format('woff'), url('ttf/iosevka-custom-boldoblique.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Iosevka Custom Web Oblique';
+	font-weight: 700;
+	src: url('woff2/iosevka-custom-boldoblique.woff2') format('woff2'), url('woff/iosevka-custom-boldoblique.woff') format('woff'), url('ttf/iosevka-custom-boldoblique.ttf') format('truetype');
+}
