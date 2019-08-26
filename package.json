@@ -8,6 +8,7 @@
 	"scripts": {
 		"install": "node checkenv",
 		"build": "verda -f verdafile.js",
+		"build-custom": "npm run build -- contents::iosevka-custom",
 		"stylus": "stylus"
 	},
 	"dependencies": {
