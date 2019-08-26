@@ -1,0 +1,632 @@
+###### Other symbols
+$$include '../meta/macros.ptl'
+
+import [mix linreg clamp fallback] from '../support/utils'
+import [designParameters] from '../meta/aesthetics'
+import '../support/transform' as Transform
+import '../support/mask-bit' as maskBit
+
+
+export : define [apply] : begin
+	glyph-module-entry commonShapes overmarks geometricSymbols
+
+	### # IPA tonal marks
+	### symbol-block 'Phonetic Symbols'
+	local triangleSize : Math.min (PERIODRADIUS) (XH / 5)
+	
+	sketch # trianglecolon
+		start-from (MIDDLE - triangleSize * 1.35) XH
+		line-to    MIDDLE (XH - triangleSize * 2.75)
+		line-to    (MIDDLE + triangleSize * 1.35) XH
+		start-from (MIDDLE - triangleSize * 1.35) 0
+		line-to    MIDDLE (0 + triangleSize * 2.75)
+		line-to    (MIDDLE + triangleSize * 1.35) 0
+	
+		save 'trianglecolon' 0x2D0
+	
+	sketch # halftrianglecolon
+		start-from (MIDDLE - triangleSize * 1.35) XH
+		line-to    MIDDLE (XH - triangleSize * 2.75)
+		line-to    (MIDDLE + triangleSize * 1.35) XH
+		save 'halftrianglecolon' 0x2D1
+
+	foreach tone [range 4 downtill 0] : begin
+		create-glyph ('tone' + tone) : glyph-construction
+			assign-unicode (0x2E5 + 4 - tone)
+			include : VBarRight [mix SB RIGHTSB 0.9] 0 CAP OPERATORSTROKE
+			include : HBar [mix SB RIGHTSB 0.1] ([mix SB RIGHTSB 0.9] - 1) [mix (OPERATORSTROKE / 2) (CAP - OPERATORSTROKE / 2) (tone / 4)] OPERATORSTROKE
+
+	do "Suit card"
+		local df : DivFrame para.diversityM
+		local heartTop : mix symbolMid operTop 0.75
+		local heartBot : mix symbolMid operBot 0.75
+		local heartRight : df.middle + [mix RIGHTSB WIDTH (1 / 2)] - MIDDLE
+		local heartLeft : df.middle - (heartRight - df.middle)
+		local sw : adviceBlackness 4.25
+		
+		local y1 : mix heartBot heartTop 0.5
+		local y2 : mix heartBot heartTop 0.75
+		local y3 : mix heartBot heartTop 0.75
+
+		define [wrap g] : glyph-construction
+			set-width df.width
+			include g AS_BASE
+
+		define [HeartInnerShape sw tip ext] : spiro-outline
+			corner df.middle (heartBot + sw * tip)
+			quadcontrols 1 (2 / 3)
+			g4 (heartRight - O - sw) y2
+			arcvh
+			g4 [mix df.middle heartRight 0.5] (heartTop - sw * tip / 1.75)
+			archv
+			if sw
+			: then : list
+				corner (df.middle + sw / 3) (y3 - sw * ext)
+				corner (df.middle - sw / 3) (y3 - sw * ext)
+			: else : corner df.middle (y3 - sw)
+			arcvh
+			g4 [mix df.middle heartLeft 0.5] (heartTop - sw * tip / 1.75)
+			archv
+			g4 (heartLeft + O + sw) y2
+			quadcontrols 0 (1 / 3)
+			close
+		
+		save-glyph 'heartSuit' 0x2665 : wrap : HeartInnerShape 0 0 0
+		save-glyph 'whiteHeartSuit' 0x2661 : wrap : difference glyphs.heartSuit [HeartInnerShape sw 1.75 0.8]
+		save-glyph 'spadeSuit' 0x2660 : wrap : union
+			sketch
+				include glyphs.heartSuit
+				apply-transform : Upright
+				apply-transform : Translate (-df.middle) (-heartBot)
+				apply-transform : Scale 1 (-0.75)
+				apply-transform : Translate df.middle heartTop
+				apply-transform : Italify
+			HBarBottom [mix SB df.rightSB 0.25] [mix df.rightSB SB 0.25] heartBot sw
+			VBar df.middle heartBot [mix heartBot heartTop (1 - 0.75 * 0.75)] sw
+		
+		save-glyph 'whiteSpadeSuit' 0x2664 : wrap : difference glyphs.spadeSuit : sketch
+			include : HeartInnerShape sw 2 0
+			apply-transform : Upright
+			apply-transform : Translate (-df.middle) (-heartBot)
+			apply-transform : Scale 1 (-0.75)
+			apply-transform : Translate df.middle heartTop
+			apply-transform : Italify
+		
+		local clubTopY : mix heartTop heartBot 0.22
+		local clubTriangleHeight : (heartTop - heartBot) * 0.3
+		define [ClubTriangles r] : union
+			RingAt df.middle clubTopY r
+			RingAt (df.middle - clubTriangleHeight / [Math.sqrt 3]) (clubTopY - clubTriangleHeight) r
+			RingAt (df.middle + clubTriangleHeight / [Math.sqrt 3]) (clubTopY - clubTriangleHeight) r
+			spiro-outline
+				corner df.middle clubTopY
+				corner (df.middle - clubTriangleHeight / [Math.sqrt 3]) (clubTopY - clubTriangleHeight)
+				corner (df.middle + clubTriangleHeight / [Math.sqrt 3]) (clubTopY - clubTriangleHeight)
+
+		define [ClubShape r] : sketch
+			include : ClubTriangles r
+			include : HBarBottom [mix SB df.rightSB 0.25] [mix df.rightSB SB 0.25] heartBot sw
+			include : VBar df.middle heartBot [mix heartBot heartTop 0.45] sw
+		
+		local circleRadius : (heartTop - heartBot) * 0.18
+		save-glyph 'clubSuit' 0x2663 : wrap : ClubShape circleRadius
+		save-glyph 'whiteClubSuit' 0x2667 : wrap : sketch
+			local ro : circleRadius + sw / 2
+			local ri : circleRadius - sw / 2
+			include : difference [ClubShape ro] [ClubTriangles ri]
+
+		save-glyph 'diamondSuit' 0x2666 : wrap : sketch
+			start-from df.middle heartTop
+			line-to    (heartRight - O) symbolMid
+			line-to    df.middle heartBot
+			line-to    (heartLeft + O) symbolMid
+
+		save-glyph 'whiteDiamondSuit' 0x2662 : wrap : intersection glyphs.diamondSuit
+			union
+				dispiro [widths.rhs sw] [flat df.middle heartTop] [curl (heartRight - O) symbolMid]
+				dispiro [widths.rhs sw] [flat (heartRight - O) symbolMid] [curl df.middle heartBot]
+				dispiro [widths.rhs sw] [flat df.middle heartBot] [curl (heartLeft + O) symbolMid]
+				dispiro [widths.rhs sw] [flat (heartLeft + O) symbolMid] [curl df.middle heartTop]
+
+	### symbol-block 'Planets'
+	sketch # venus
+		local obot : operTop - RIGHTSB + SB
+		include : OShape operTop obot SB RIGHTSB OPERATORSTROKE
+		include : VBar MIDDLE operBot obot OPERATORSTROKE
+		include : HBar SB RIGHTSB [mix operBot (obot + OPERATORSTROKE) 0.5] OPERATORSTROKE
+	
+		save 'venus' 0x2640
+	turned 'earth' 0x2641 'venus' MIDDLE symbolMid
+	
+	sketch # mars
+		local otop : operBot + RIGHTSB - SB
+		include : OShape otop operBot SB RIGHTSB OPERATORSTROKE
+		include : ArrowShape MIDDLE (otop - OPERATORSTROKE / 3) MIDDLE operTop ((RIGHTSB - SB) * 0.4)
+		save 'mars' 0x2642
+
+	### symbol-block 'Musical'
+	do "Musical Notations"
+		define fine : adviceBlackness 6
+		define noteSize : WIDTH * 0.4 + fine / 2
+		define noteCompress 0.8
+		define commonNoteBottom : operBot + noteCompress / 2 * noteSize
+		define [BandShape z1 z2 l r h] : begin
+			local slope : (z2.y - z1.y) / (z2.x - z1.x)
+			local yl : z1.y + (l - z1.x) * slope
+			local yr : z1.y + (r - z1.x) * slope
+			return : spiro-outline
+				corner l yl
+				corner r yr
+				corner r (yr + h)
+				corner l (yl + h)
+		define [MusicalNoteAt size x y] : sketch
+			include : Ring (- noteCompress / 2 * size) (noteCompress / 2 * size) (-size) 0
+			include : Upright
+			include : new Transform 1 0 0.15 1 0 0
+			include : Translate x y
+			include : Italify
+		save-glyph 'crotchet' 0x2669 : union
+			MusicalNoteAt noteSize (MIDDLE + noteSize / 6 + fine / 2 * HVCONTRAST) commonNoteBottom
+			VBar (MIDDLE + noteSize / 6) commonNoteBottom operTop fine
+		save-glyph 'quaver' 0x266A : sketch
+			local x3 : mix MIDDLE RIGHTSB 0.35
+			local y3 : mix operBot operTop 0.25
+			local y2 : mix y3 operTop 0.25
+			include : union
+				MusicalNoteAt noteSize MIDDLE commonNoteBottom
+				VBarRight MIDDLE commonNoteBottom operTop fine
+				dispiro
+					widths.rhs fine
+					g4.down.start MIDDLE operTop
+					g4.down.mid RIGHTSB y2
+					g4 x3 y3
+		do "Beamed Notes"
+			local x1 : MIDDLE - noteSize / 6
+			local x2 : x1 + noteSize * 7 / 6
+			local deltaY : noteCompress * noteSize / 2
+			local lb1 : operBot + noteCompress / 2 * noteSize
+			local bandWidth : noteSize * noteCompress * 0.75
+			save-glyph 'beamQuaver' 0x266B : difference
+				union
+					MusicalNoteAt noteSize x1 commonNoteBottom
+					VBarRight x1 commonNoteBottom (operTop - deltaY) fine
+					MusicalNoteAt noteSize x2 (commonNoteBottom + deltaY)
+					VBarRight x2 (commonNoteBottom + deltaY) operTop fine
+					BandShape
+						object [x x1] [y : operTop - deltaY]
+						object [x x2] [y operTop]
+						x1 - fine * HVCONTRAST
+						x2 + 0
+						0 - bandWidth
+				BandShape
+					object [x x1] [y : operTop - deltaY]
+					object [x x2] [y operTop]
+					x1 - fine * HVCONTRAST
+					x2 + 0
+					0 + bandWidth
+			save-glyph 'beamSemiQuaver' 0x266C : union glyphs.beamQuaver
+				BandShape
+					object [x x1] [y : operTop - deltaY - 1.5 * bandWidth]
+					object [x x2] [y : operTop - 1.5 * bandWidth]
+					x1 - fine * HVCONTRAST
+					x2 + 0
+					0 - bandWidth
+		do "sharp, flat and neutral"
+			local nsTop operTop
+			local nsBot operBot
+			local fine : adviceBlackness 3.5
+			local fine2 : adviceBlackness 4
+			local l : SB - fine / 2
+			local r : RIGHTSB + fine / 2
+			local hsp : ((r - l) - (fine * 2 * HVCONTRAST)) * 0.3
+			local skew 0.2
+			save-glyph 'sharpTone' 0x266F : sketch
+				include : dispiro
+					widths.center
+					flat l ([mix nsTop nsBot 0.3] - (MIDDLE - l) * skew) [heading RIGHTWARD]
+					curl r ([mix nsTop nsBot 0.3] - (MIDDLE - r) * skew) [heading RIGHTWARD]
+				include : dispiro
+					widths.center
+					flat l ([mix nsTop nsBot 0.7] - (MIDDLE - l) * skew) [heading RIGHTWARD]
+					curl r ([mix nsTop nsBot 0.7] - (MIDDLE - r) * skew) [heading RIGHTWARD]
+				include : VBarLeft  (l + hsp) (nsBot - (MIDDLE - l - hsp) * skew) (nsTop - (MIDDLE - l - hsp) * skew) fine
+				include : VBarRight (r - hsp) (nsBot - (MIDDLE - r + hsp) * skew) (nsTop - (MIDDLE - r + hsp) * skew) fine
+			save-glyph 'flatTone' 0x266D : sketch
+				local yTerminal : mix nsBot nsTop 0.55
+				local curly 0.65
+				local curly2 1.1
+				local curly3 0.3
+				local l [mix SB RIGHTSB 0.07]
+				local r [mix RIGHTSB SB 0.07]
+				include : difference
+					union
+						VBarLeft l nsBot nsTop fine
+						dispiro
+							widths.lhs fine
+							g4 l (nsBot - 1)
+							alsothru 0.5 curly3
+							g4.up.mid (r - O + 1) ([mix nsBot yTerminal curly] + (r - l) * skew - TANSLANT * para.smoothadjust) [widths.lhs (fine + 1)]
+							g4.left.mid ([mix l r 0.5] - CORRECTION_OMIDX * fine) ([mix nsBot yTerminal curly2] + (r - l) * skew / 2 + 1)
+							g4 l (yTerminal + 1)
+					difference
+						spiro-outline
+							corner l (nsBot - UPM)
+							corner l nsBot
+							alsothru 0.5 curly3
+							g4.up.mid (r - O) ([mix nsBot yTerminal curly] + (r - l) * skew - TANSLANT * para.smoothadjust)
+							g4.left.mid ([mix l r 0.5] - CORRECTION_OMIDX * fine) ([mix nsBot yTerminal curly2] + (r - l) * skew / 2)
+							corner l yTerminal
+							corner l (yTerminal + 1)
+							corner l nsTop
+							corner WIDTH nsTop
+							corner WIDTH (nsBot - UPM)
+						spiro-outline
+							corner 0 yTerminal
+							corner 0 nsTop
+							corner (l + fine * HVCONTRAST) nsTop
+							corner (l + fine * HVCONTRAST) yTerminal
+					spiro-outline
+						corner l (nsBot - UPM)
+						corner l nsTop
+						corner (l - UPM) nsTop
+						corner (l - UPM) (nsBot - UPM)
+			save-glyph 'neutralTone' 0x266E : sketch
+				local k : 0.25 - (STROKE * 0.25 / (nsTop - nsBot))
+				local kr 0.5
+				local ll (l + hsp * kr)
+				local rr (r - hsp * kr)
+
+				local barLeft  : VBarLeft  ll [mix nsBot nsTop k] nsTop fine
+				local barRight : VBarRight rr nsBot [mix nsBot nsTop (1 - k)] fine
+				local diagLow : dispiro
+					widths.lhs fine
+					flat ll [mix nsBot nsTop k]
+					curl rr ([mix nsBot nsTop k] + (rr - ll) * skew)
+				local belowDiagLow : spiro-outline
+					corner ll [mix nsBot nsTop k]
+					corner rr ([mix nsBot nsTop k] + (rr - ll) * skew)
+					corner rr nsBot
+					corner ll nsBot
+				local diagHigh : dispiro
+					widths.lhs fine
+					flat rr [mix nsBot nsTop (1 - k)]
+					curl ll ([mix nsBot nsTop (1 - k)] - (rr - ll) * skew)
+				local aboveDiagHigh : spiro-outline
+					corner rr [mix nsBot nsTop (1 - k)]
+					corner ll ([mix nsBot nsTop (1 - k)] - (rr - ll) * skew)
+					corner ll nsTop
+					corner rr nsTop
+				local outsideBars : difference
+					spiro-outline
+						corner (ll - UPM) (nsBot - UPM)
+						corner (ll - UPM) (nsTop + UPM)
+						corner (rr + UPM) (nsTop + UPM)
+						corner (rr + UPM) (nsBot - UPM)
+					spiro-outline
+						corner ll nsBot
+						corner ll nsTop
+						corner rr nsTop
+						corner rr nsBot
+						
+				include : union
+					difference barLeft belowDiagLow
+					difference barRight aboveDiagHigh
+					difference diagLow barLeft barRight outsideBars
+					difference diagHigh barLeft barRight outsideBars
+
+	### symbol-block 'Metric marks'
+	sketch # metmark
+		include : VBar MIDDLE (-font.OS_2.usWinDescent) (font.OS_2.usWinAscent) SHOULDERFINE
+		include : HBar MIDDLE WIDTH 0 SHOULDERFINE
+		include : HBar MIDDLE WIDTH CAP SHOULDERFINE
+		include : HBar MIDDLE WIDTH XH SHOULDERFINE
+		include : HBar MIDDLE WIDTH DESCENDER SHOULDERFINE
+		include : HBar 0 MIDDLE symbolMid SHOULDERFINE
+		include : HBar 0 MIDDLE parenTop SHOULDERFINE
+		include : HBar 0 MIDDLE parenBot SHOULDERFINE
+		save 'metmark' 0xE09F
+
+	### symbol-block 'Flags'
+	do
+		local sw : adviceBlackness 5
+		local flagDown : 0.07 * (parenTop - parenBot)
+		local delta 1
+		local curliness 0.85
+		define [FlagBar] : VBar SB operBot operTop sw
+		sketch # Black flag
+			include : spiro-outline
+				corner SB operTop
+				curl (SB + delta) operTop
+				alsothru 0.5 (1 - curliness)
+				g4 MIDDLE (operTop - flagDown / 2)
+				alsothru 0.5 curliness
+				flat (RIGHTSB - delta) (operTop - flagDown)
+				corner RIGHTSB (operTop - flagDown)
+				corner RIGHTSB (symbolMid - flagDown)
+				curl (RIGHTSB - delta) (symbolMid - flagDown)
+				alsothru 0.5 (1 - curliness)
+				g4 MIDDLE (symbolMid - flagDown / 2)
+				alsothru 0.5 curliness
+				flat (SB + delta) symbolMid
+				corner SB symbolMid
+				close
+			include : Translate (sw / 2 * HVCONTRAST) 0
+			include : FlagBar
+			save 'blackflag' 0x2691
+		sketch # White flag
+			include : VBarRight RIGHTSB (symbolMid - flagDown) (operTop - flagDown) sw
+			include : dispiro
+				widths.rhs sw
+				flat SB operTop [heading RIGHTWARD]
+				curl (SB + delta) operTop [heading RIGHTWARD]
+				alsothru 0.5 (1 - curliness)
+				g4 MIDDLE (operTop - flagDown / 2)
+				alsothru 0.5 curliness
+				flat (RIGHTSB - delta) (operTop - flagDown) [heading RIGHTWARD]
+				curl RIGHTSB (operTop - flagDown) [heading RIGHTWARD]
+			include : dispiro
+				widths.rhs sw
+				flat RIGHTSB ((symbolMid - sw / 2) - flagDown) [heading LEFTWARD]
+				curl (RIGHTSB - delta) ((symbolMid - sw / 2) - flagDown) [heading LEFTWARD]
+				alsothru 0.5 (1 - curliness)
+				g4 MIDDLE ((symbolMid - sw / 2) - flagDown / 2)
+				alsothru 0.5 curliness
+				flat (SB + delta) (symbolMid - sw / 2) [heading LEFTWARD]
+				curl SB (symbolMid - sw / 2) [heading LEFTWARD]
+			include : Translate (sw / 2 * HVCONTRAST) 0
+			include : FlagBar
+			save 'whiteflag' 0x2690
+
+	### symbol-block 'Other typographic symbols'
+	sketch # Kome
+		local sw : adviceBlackness 3.75
+		local radius : (RIGHTSB - SB) / 2
+		include : dispiro
+			widths.center sw
+			flat (MIDDLE - radius) (symbolMid - radius)
+			curl (MIDDLE + radius) (symbolMid + radius)
+		
+		include : dispiro
+			widths.center sw
+			flat (MIDDLE + radius) (symbolMid - radius)
+			curl (MIDDLE - radius) (symbolMid + radius)
+		local r0 : Math.min ((RIGHTSB - SB + (sw / [Math.sqrt 2]) - sw * 3) / 4) DOTRADIUS
+		local r  : radius - r0 + (sw / 2 / [Math.sqrt 2])
+		include : RingAt (MIDDLE + r) symbolMid r0
+		include : RingAt (MIDDLE - r) symbolMid r0
+		include : RingAt MIDDLE (symbolMid + r) r0
+		include : RingAt MIDDLE (symbolMid - r) r0
+		save 'kome' 0x203B
+	
+	sketch
+		local sw : [adviceBlackness 3] / 2
+		local kInside 0.5
+		local kOutside 2.5
+		local l : mix SB RIGHTSB 0.1
+		local r : mix RIGHTSB SB 0.1
+		start-from [mix l r 0.6] operTop
+		line-to (l - sw * kInside) (symbolMid - sw)
+		line-to (r - sw * kOutside) (symbolMid - sw)
+		line-to [mix r l 0.6] operBot
+		line-to (r + sw * kInside) (symbolMid + sw)
+		line-to (l + sw * kOutside) (symbolMid + sw)
+		save 'boltSymbol' 0x26A1
+	
+	do "Checking marks"
+		local light : adviceBlackness 4.5
+		local medium : Math.max (light * 1.75) (WIDTH * 0.2)
+		local heavy : Math.max (light * 2.5) (WIDTH * 0.3)
+		local shapesize 0.8
+		local shapesizeCheck : shapesize * 1.1
+		foreach [{unicode sw} : items-of {{0x2713 light} {0x2714 medium}} ] : sketch
+			include : dispiro
+				widths.center sw
+				g4 SB [mix symbolMid [mix operBot operTop 0.46] shapesizeCheck]
+				alsothru 0.5 0.4
+				g4 [mix SB RIGHTSB 0.4] [mix symbolMid [mix operBot operTop 0.05] shapesizeCheck] [heading DOWNWARD]
+			include : dispiro
+				widths.center sw
+				g4 [mix SB RIGHTSB 0.4] [mix symbolMid [mix operBot operTop 0.05] shapesizeCheck] [heading UPWARD]
+				alsothru 0.5 0.6
+				g4 RIGHTSB [mix symbolMid [mix operBot operTop 0.9] shapesizeCheck]
+			save null unicode
+
+		foreach [{unicode sw} : items-of {{0x271A medium}} ] : sketch
+			include : dispiro
+				widths.center sw
+				g4 [mix WIDTH RIGHTSB 0.5] symbolMid
+				g4 [mix 0 SB 0.5] symbolMid
+			include : dispiro
+				widths.center sw
+				g4 MIDDLE [mix symbolMid operTop (0.8 * shapesize * 7/8)]
+				g4 MIDDLE [mix symbolMid operBot (0.9 * shapesize * 7/8)]
+			save null unicode
+
+		foreach [{unicode sw} : items-of {{0x2715 light} {0x2716 medium}} ] : sketch
+			include : dispiro
+				widths.center sw
+				g4 RIGHTSB [mix symbolMid operTop (0.8 * shapesize)]
+				g4 SB [mix symbolMid operBot (0.9 * shapesize)]
+			include : dispiro
+				widths.center sw
+				g4 SB [mix symbolMid operTop (0.8 * shapesize)]
+				g4 RIGHTSB [mix symbolMid operBot (0.9 * shapesize)]
+			save null unicode
+
+		foreach [{unicode sw} : items-of {{0x2717 light} {0x2718 medium}} ] : sketch
+			include : dispiro
+				widths.center sw
+				g4 RIGHTSB [mix symbolMid [mix operBot operTop 0.9] shapesize]
+				alsothru 0.53 0.45
+				g4 SB [mix symbolMid operBot (1.05 * shapesize)]
+			include : dispiro
+				widths.center sw
+				g4 [mix SB RIGHTSB 0.1] [mix symbolMid [mix operBot operTop 0.86] shapesize]
+				alsothru 0.47 0.5
+				g4 [mix SB RIGHTSB 0.9] [mix symbolMid [mix operBot operTop 0.05] shapesize]
+			save null unicode
+		foreach [{unicode sw op} : items-of {
+			{ 0x276C light 1 }
+			{ 0x276D light 0 }
+			{ 0x276E medium 1 }
+			{ 0x276F medium 0 }
+			{ 0x2770 heavy 1 }
+			{ 0x2771 heavy 0 }
+		}] : sketch
+			include : dispiro
+				widths.center sw
+				corner [mix (SB + sw / 2) (RIGHTSB - sw / 2) op] operTop [heading DOWNWARD]
+				corner [mix (SB + sw / 2) (RIGHTSB - sw / 2) (1 - op)] symbolMid [heading DOWNWARD]
+				corner [mix (SB + sw / 2) (RIGHTSB - sw / 2) op] operBot [heading DOWNWARD]
+			save null unicode
+	
+	do "I-Ching"
+		# Trigrams
+		define [yin m n] : glyph-construction
+			local offsetY : (2 / 3) * (operBot - operTop) / n
+			local startY : symbolMid - offsetY * (n - 1) / 2
+			local bar : adviceBlackness n
+			local fine : adviceBlackness 5
+			local gap : Math.max (WIDTH / 8) (fine)
+			include : HBar SB (MIDDLE - gap / 2 * HVCONTRAST) (startY + offsetY * m) bar
+			include : HBar (MIDDLE + gap / 2 * HVCONTRAST) RIGHTSB (startY + offsetY * m) bar
+		
+		define [yang m n] : glyph-construction
+			local offsetY : (2 / 3) * (operBot - operTop) / n
+			local startY : symbolMid - offsetY * (n - 1) / 2
+			local bar : adviceBlackness n
+			include : HBar SB RIGHTSB (startY + offsetY * m) bar
+		
+		define [patterns n su] : foreach [offset: range 0 [Math.pow 2 n]] : sketch
+			foreach [bit : range 0 n] : begin
+				if [maskBit offset bit] 
+					then : include : yin bit n
+					else : include : yang bit n
+			save null (su + offset)
+
+		patterns 1 0x268A
+		patterns 2 0x268C
+		patterns 3 0x2630
+		
+
+	### ### Ligature-orienteds
+	### symbol-block 'Ligature-oriented Subglyphs' : if (para.spacing > 0) : begin
+	# Shifted arrowheads
+
+	local arrowheadsKern : clamp 0 (WIDTH * 0.4) (WIDTH - OPERATORSTROKE * 3)
+
+	# Right-shifted >
+	sketch
+		include glyphs.greater AS_BASE ALSO_METRICS
+		include : Translate (arrowheadsKern / 3) 0
+		save 'liggreater.shift0t'
+		include : Translate (arrowheadsKern / 6) 0
+		save 'liggreater.shift0h'
+		include : Translate (arrowheadsKern / 2) 0
+		save 'liggreater.shift1'
+		include : Translate (arrowheadsKern / 2) 0
+		save 'liggreater.shift1h'
+		include : Translate (arrowheadsKern / 2) 0
+		save 'liggreater.shift2'
+
+	# Left-shifted >
+	sketch
+		include glyphs.greater AS_BASE ALSO_METRICS
+		include : Translate (-arrowheadsKern / 3) 0
+		save 'liggreater.shiftN0t'
+		include : Translate (-arrowheadsKern / 6) 0
+		save 'liggreater.shiftN0h'
+		include : Translate (-arrowheadsKern / 2) 0
+		save 'liggreater.shiftN1'
+		include : Translate (-arrowheadsKern / 2) 0
+		save 'liggreater.shiftN1h'
+		include : Translate (-arrowheadsKern / 2) 0
+		save 'liggreater.shiftN2'
+
+	# Left-shifted <
+	sketch
+		include glyphs.less AS_BASE ALSO_METRICS
+		include : Translate (-arrowheadsKern / 3) 0
+		save 'ligless.shift0t'
+		include : Translate (-arrowheadsKern / 6) 0
+		save 'ligless.shift0h'
+		include : Translate (-arrowheadsKern / 2) 0
+		save 'ligless.shift1'
+		include : Translate (-arrowheadsKern / 2) 0
+		save 'ligless.shift1h'
+		include : Translate (-arrowheadsKern / 2) 0
+		save 'ligless.shift2'
+
+	# Right-shifted <
+	sketch
+		include glyphs.less AS_BASE ALSO_METRICS
+		include : Translate (arrowheadsKern / 3) 0
+		save 'ligless.shiftN0t'
+		include : Translate (arrowheadsKern / 6) 0
+		save 'ligless.shiftN0h'
+		include : Translate (arrowheadsKern / 2) 0
+		save 'ligless.shiftN1'
+		include : Translate (arrowheadsKern / 2) 0
+		save 'ligless.shiftN1h'
+		include : Translate (arrowheadsKern / 2) 0
+		save 'ligless.shiftN2'
+
+	# arrows
+	# ->
+	define arrowheadSlope : (RIGHTSB - SB) / (parenTop - parenBot) * 5
+	define [ArrowBarConfig extend kern join] : let [cleft O] [cright (WIDTH - O)] [arrowr : WIDTH + extend] [arrowl : 0 - extend] : list
+		list 'fr' SB arrowr
+		list 'lf' arrowl RIGHTSB
+		list 'cr' cleft arrowr
+		list 'lc' arrowl cright
+		list 'lxc' [mix arrowl 0 0.5] cright
+		list 'fr1' SB (arrowr + kern)
+		list 'l1f' (arrowl - kern) RIGHTSB
+		list 'cr1' cleft (arrowr + kern)
+		list 'l1c' (arrowl - kern) cright
+		list 'fr2' SB (arrowr + kern * 2)
+		list 'l2f' (arrowl - kern * 2) RIGHTSB
+		list 'cr2' cleft (arrowr + kern * 2)
+		list 'l2c' (arrowl - kern * 2) cright
+		list 'cf' cleft RIGHTSB
+		list 'fc' SB cright
+		list 'jf' (-join) RIGHTSB
+		list 'fj' SB (WIDTH + join)
+		list 'jr' (-join) arrowr
+		list 'jc' (-join) cright
+		list 'lj' arrowl (WIDTH + join)
+		list 'cj' cleft (WIDTH + join)
+		list 'j1f' (-join - kern) RIGHTSB
+		list 'fj1' SB (WIDTH + join + kern)
+		list 'lr' arrowl arrowr
+		list 'cc' cleft cright
+		list 'zf' (cleft - WIDTH + RIGHTSB) RIGHTSB
+		list 'zc' (cleft - WIDTH + RIGHTSB) cright
+		list 'fz' SB (cright + SB)
+		list 'cz' cleft (cright + SB)
+
+	local arrowextend [clamp 0 WIDTH (RIGHTSB - OPERATORSTROKE / 2 * arrowheadSlope)]
+	local arrowj : clamp 0 WIDTH (SB + OPERATORSTROKE / 2 * arrowheadSlope)
+	foreach [{subclass left right} : items-of [ArrowBarConfig arrowextend arrowheadsKern arrowj]] : sketch
+		include : HBar left right symbolMid OPERATORSTROKE
+		set currentGlyph.cmpPriority (-3)
+		save ('lighyphen.' + subclass)
+	 
+	# =>
+	# local dblarrowd : XH * [linreg 18 0.15 126 0.275 STROKE]
+	# local sw : Math.min OPERATORSTROKE (dblarrowd * [clamp 0.45 0.75 ((1 - WHITENESS) * 1)])
+	local sw OPERATORSTROKE
+	local dblarrowd ((parenTop - parenBot) * designParameters.equal_wideness + sw / 2)
+	local dblextend : clamp 0 WIDTH (RIGHTSB - (dblarrowd - sw / 2) * arrowheadSlope)
+	local dblarrowj : clamp 0 WIDTH (SB + (dblarrowd - sw / 2) * arrowheadSlope)
+	foreach [{subclass left right} : items-of [ArrowBarConfig dblextend arrowheadsKern dblarrowj]] : sketch
+		include : HBarTop left right (symbolMid + dblarrowd) sw
+		include : HBarBottom left right (symbolMid - dblarrowd) sw
+		set currentGlyph.cmpPriority (-3)
+		save ('ligequal.' + subclass)
+	
+	sketch
+		include glyphs.exclam
+		include : Translate (((RIGHTSB - WIDTH) + (WIDTH - arrowextend / 2)) / 2 - MIDDLE) 0
+		include : HBar (-arrowextend) (RIGHTSB - WIDTH) symbolMid OPERATORSTROKE
+		save 'ligexclam.htmlcommentstart'

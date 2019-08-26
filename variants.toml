@@ -1,0 +1,387 @@
+# Variants
+[simple.v-l-hooky]
+l = 'hooky'
+tag = 'cv09'
+
+[simple.v-i-hooky]
+dotlessi = 'hooky'
+tag = 'cv05'
+
+[simple.v-l-zshaped]
+l = 'zshaped'
+tag = 'cv10'
+
+[simple.v-i-zshaped]
+dotlessi = 'zshaped'
+tag = 'cv06'
+
+[simple.v-l-serifed]
+l = 'serifed'
+tag = 'cv07'
+
+[simple.v-i-serifed]
+dotlessi = 'serifed'
+tag = 'cv03'
+
+[simple.v-l-italic]
+l = 'italic'
+tag = 'cv08'
+
+[simple.v-i-italic]
+dotlessi = 'italic'
+tag = 'cv04'
+
+[simple.v-l-tailed]
+l = 'tailed'
+tag = 'cv27'
+
+[simple.v-l-hookybottom]
+l = 'hookybottom'
+tag = 'cv28'
+
+[simple.v-a-singlestorey]
+a = 'singlestorey'
+tag = 'cv02'
+
+[simple.v-a-doublestorey]
+a = 'doublestorey'
+tag = 'cv01'
+
+[simple.v-g-singlestorey]
+g = 'singlestorey'
+tag = 'cv12'
+
+[simple.v-g-doublestorey]
+g = 'doublestorey'
+tag = 'cv11'
+
+[simple.v-g-opendoublestorey]
+g = 'opendoublestorey'
+tag = 'cv24'
+
+[simple.v-zero-slashed]
+zero = 'slashed'
+tag = 'cv13'
+
+[simple.v-zero-dotted]
+zero = 'dotted'
+tag = 'cv14'
+
+[simple.v-zero-unslashed]
+zero = 'unslashed'
+tag = 'cv15'
+
+[simple.v-tilde-high]
+asciitilde = 'high'
+tag = 'cv16'
+
+[simple.v-tilde-low]
+asciitilde = 'low'
+tag = 'cv17'
+
+[simple.v-asterisk-high]
+asterisk = 'high'
+tag = 'cv18'
+
+[simple.v-asterisk-low]
+asterisk = 'low'
+tag = 'cv19'
+
+[simple.v-underscore-high]
+underscore = 'high'
+tag = 'cv20'
+
+[simple.v-underscore-low]
+underscore = 'low'
+tag = 'cv21'
+
+[simple.v-paragraph-high]
+paragraph = 'high'
+revertParagraph = 'high'
+tag = 'cv22'
+
+[simple.v-paragraph-low]
+paragraph = 'low'
+revertParagraph = 'low'
+tag = 'cv23'
+
+[simple.v-m-longleg]
+m = 'longleg'
+tag = 'cv25'
+
+[simple.v-m-shortleg]
+m = 'shortleg'
+tag = 'cv26'
+
+[simple.v-caret-high]
+asciicaret = 'high'
+tag = 'cv29'
+
+[simple.v-caret-low]
+asciicaret = 'low'
+tag = 'cv30'
+
+[simple.v-at-threefold]
+at = 'threefold'
+tag = 'cv31'
+
+[simple.v-at-fourfold]
+at = 'fourfold'
+tag = 'cv32'
+
+[simple.v-at-short]
+at = 'short'
+tag = 'cv33'
+
+[simple.v-eszet-traditional]
+eszet = 'traditional'
+tag = 'cv34'
+
+[simple.v-eszet-sulzbacher]
+eszet = 'sulzbacher'
+tag = 'cv35'
+
+[simple.v-brace-straight]
+braceLeft = 'straight'
+braceRight = 'straight'
+tag = 'cv36'
+
+[simple.v-brace-curly]
+braceLeft = 'curly'
+braceRight = 'curly'
+tag = 'cv37'
+
+[simple.v-dollar-open]
+dollar = 'open'
+tag = 'cv38'
+
+[simple.v-dollar-through]
+dollar = 'through'
+tag = 'cv39'
+
+[simple.v-t-standard]
+t = 'standard'
+tag = 'cv40'
+
+[simple.v-t-cross]
+t = 'cross'
+tag = 'cv41'
+
+[simple.v-q-taily]
+Q = 'taily'
+tag = 'cv42'
+
+[simple.v-q-straight]
+Q = 'straight'
+tag = 'cv43'
+
+[simple.v-numbersign-upright]
+numbersign = 'upright'
+tag = 'cv44'
+
+[simple.v-numbersign-slanted]
+numbersign = 'slanted'
+tag = 'cv45'
+
+[simple.v-three-flattop]
+three = 'flattop'
+tag = 'cv46'
+
+[simple.v-three-twoarcs]
+three = 'twoarcs'
+tag = 'cv47'
+
+[simple.v-y-straight]
+y = "straight"
+tag = "cv48"
+
+[simple.v-y-curly]
+y = "curly"
+tag = "cv49"
+
+[simple.v-one-hooky]
+one = "hooky"
+tag = "cv50"
+
+[simple.v-one-serifed]
+one = "serifed"
+tag = "cv51"
+
+[simple.v-f-straight]
+f = "straight"
+tag = "cv52"
+
+[simple.v-f-tailed]
+f = "tailed"
+tag = "cv53"
+
+[simple.v-dollar-opencap]
+dollar = "opencap"
+tag = "cv54"
+
+[simple.v-dollar-throughcap]
+dollar = "throughcap"
+tag = "cv55"
+
+[simple.v-i-line]
+dotlessi = "line"
+tag = "cv56"
+
+[simple.v-j-line]
+dotlessj = "line"
+tag = "cv57"
+
+[simple.v-j-serifed]
+dotlessj = "serifed"
+tag = "cv58"
+
+[simple.v-l-line]
+l = "line"
+tag = "cv59"
+
+[simple.v-asterisk-hexhigh]
+asterisk = "hexhigh"
+tag = "cv60"
+
+[simple.v-asterisk-hexlow]
+asterisk = "hexlow"
+tag = "cv61"
+
+[simple.v-percent-dots]
+percent = "dots"
+permille = "dots"
+basepoint = "dots"
+tag = "cv62"
+
+[simple.v-percent-rings]
+percent = "rings"
+permille = "rings"
+basepoint = "rings"
+tag = "cv63"
+
+# "Untagged" variants, used for Aile, etc.
+
+[simple.v-i-tailed]
+dotlessi = 'tailed'
+
+[simple.v-j-straight]
+dotlessj = "straight"
+
+[simple.v-capital-i-straight]
+I = "line" # set on purpose to use II diversity
+
+[simple.v-capital-i-serifed]
+I = "serifed"
+
+[simple.v-capital-j-straight]
+J = "straight"
+
+[simple.v-capital-j-serifed]
+J = 'serifed'
+
+[simple.v-f-narrow]
+f = 'narrow'
+
+[simple.v-t-narrow]
+t = 'narrow'
+
+[simple.v-r-standard]
+r = "standard"
+
+[simple.v-r-narrow]
+r = "narrow"
+
+[simple.v-j-narrow]
+dotlessj = "narrow"
+
+[default]
+design = [
+	'v-m-longleg',
+	'v-t-standard',
+	'v-q-taily',
+	'v-zero-slashed',
+	'v-tilde-low',
+	'v-asterisk-high',
+	'v-paragraph-high',
+	'v-caret-high',
+	'v-underscore-high',
+	'v-at-threefold',
+	'v-eszet-sulzbacher',
+	'v-brace-curly',
+	'v-dollar-through',
+	'v-numbersign-upright',
+	'v-three-twoarcs',
+	'v-one-hooky',
+	'v-percent-rings',
+	'v-capital-i-serifed',
+	'v-capital-j-serifed',
+	'v-r-standard',
+	'others'
+]
+upright = [
+	'v-a-doublestorey',
+	'v-i-serifed',
+	'v-j-serifed',
+	'v-l-serifed',
+	'v-g-doublestorey',
+	'v-y-straight',
+	'v-f-straight'
+]
+italic = [
+	'v-a-singlestorey',
+	'v-i-italic',
+	'v-j-serifed',
+	'v-l-italic',
+	'v-g-singlestorey',
+	'v-y-curly',
+	'v-f-tailed'
+]
+
+[composite.slab]
+design = ['v-one-serifed']
+
+# Composite character options, overrides default settings above.
+# Andale Mono Style
+[composite.ss01]
+design = ['v-i-hooky', 'v-a-doublestorey', 'v-l-zshaped', 'v-at-fourfold', 'v-zero-dotted', 'v-g-doublestorey', 'v-brace-straight', 'v-underscore-low', 'v-numbersign-slanted', 'v-asterisk-hexhigh']
+
+# Anonymous Pro Style
+[composite.ss02]
+design = ['v-at-fourfold', 'v-a-doublestorey', 'v-brace-straight', 'v-g-singlestorey', 'v-l-serifed', 'v-i-serifed', 'v-asterisk-hexlow']
+
+# Consolas Style
+[composite.ss03]
+design = ['v-at-fourfold', 'v-underscore-low', 'v-brace-straight', 'v-numbersign-slanted', 'v-asterisk-hexhigh']
+
+# Menlo Style
+[composite.ss04]
+design = ['v-at-threefold', 'v-a-doublestorey', 'v-underscore-low', 'v-g-singlestorey', 'v-i-serifed', 'v-l-italic', 'v-brace-straight', 'v-numbersign-slanted', 'v-asterisk-hexlow']
+
+# Fira Mono Style
+[composite.ss05]
+design = ['v-at-short', 'v-underscore-low', 'v-a-doublestorey', 'v-i-serifed', 'v-g-opendoublestorey', 'v-l-italic', 'v-numbersign-slanted', 'v-zero-dotted']
+
+# Liberation Mono Style
+[composite.ss06]
+design = ['v-at-fourfold', 'v-a-doublestorey', 'v-i-serifed', 'v-l-serifed', 'v-g-singlestorey', 'v-brace-straight', 'v-zero-dotted', 'v-numbersign-slanted']
+
+# Monaco Style
+[composite.ss07]
+design = ['v-at-fourfold', 'v-a-singlestorey', 'v-i-zshaped', 'v-g-singlestorey', 'v-l-zshaped', 'v-brace-straight', 'v-numbersign-slanted', 'v-asterisk-hexhigh']
+
+# Pragmata Pro Style
+[composite.ss08]
+design = ['v-at-threefold', 'v-a-doublestorey', 'v-l-serifed', 'v-i-serifed', 'v-asterisk-low', 'v-zero-dotted', 'v-brace-straight', 'v-dollar-open', 'v-underscore-low', 'v-numbersign-slanted', 'v-percent-dots']
+
+# Source Code Pro Style
+[composite.ss09]
+design = ['v-at-threefold', 'v-l-italic', 'v-asterisk-low', 'v-zero-dotted', 'v-dollar-open', 'v-numbersign-slanted']
+upright = ['v-i-hooky']
+
+# Envy Code R Style
+[composite.ss10]
+design = ['v-at-threefold', 'v-a-doublestorey', 'v-underscore-low', 'v-g-singlestorey', 'v-i-hooky', 'v-l-hooky', 'v-asterisk-low']
+
+# X Window Style
+[composite.ss11]
+design = ['v-g-singlestorey', 'v-zero-unslashed', 'v-tilde-high', 'v-brace-straight', 'v-dollar-through', 'v-three-flattop', 'v-at-threefold']

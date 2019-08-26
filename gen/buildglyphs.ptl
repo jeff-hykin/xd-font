@@ -1,0 +1,239 @@
+import '../support/glyph' as Glyph
+import '../support/point' as Point
+import '../support/spirokit' as spirokit
+import '../support/transform' as : Transform && [object [transformPoint tp] [untransform utp] inverse]
+import '../support/anchor' as Anchor
+import '../support/monotonic-interpolate' as smoothreg
+import '../support/fairify' as fairify
+
+import [mix linreg clamp fallback TempFont includeGlyphPart compsiteMarkSet] from '../support/utils'
+import [calculateMetrics setFontMetrics] from '../meta/aesthetics'
+import [assignFontNames] from '../meta/naming'
+import '../meta/features' as Features
+
+$$include '../meta/macros.ptl'
+
+define [$NamedParameterPair$ l r] : begin
+	set this.left l
+	set this.right r
+	return this
+
+define [$donothing$] nothing
+
+# contour tagging
+define [tagged tag component] : begin
+	set component.tag tag
+	return component
+
+# Main build procedure
+export as build : define [buildFont para recursive recursiveCodes] : begin
+	define variantSelector para.variantSelector
+	define font this
+
+	define glyphList font.glyf
+	define glyphs {.}
+	define unicodeGlyphs {}
+
+	# Progress indicator
+	define [progress status] : if [not recursive] : begin
+		if para.verbose : console.log "    \(font.name.uniqueSubFamily) : Done \(status)"
+		#suggestGC
+		return nothing
+	
+	define metrics : calculateMetrics para
+	define [object globalTransform UPM MIDDLE CAP XH SB RIGHTSB CONTRAST STROKE SUPERNESS WIDTH TANSLANT OVERLAYPOS DESCENDER MVERTSTROKE_D symbolMid parenTop parenBot operTop operBot plusTop plusBot tackTop tackBot adviceBlackness] metrics
+
+	# Anchor parameters
+	define [object MARK BASE] Anchor
+	define {AS_BASE ALSO_METRICS} {'AS-BASE' 'ALSO-METRICS'}
+
+	define [MarksetDiv p] : begin
+		define middle : p * MIDDLE
+		define rightSB : WIDTH * p - SB
+		define [ta anchor] : return : new Anchor
+			* (anchor.x * globalTransform.xx + anchor.y * TANSLANT + globalTransform.x)
+			* (anchor.x * globalTransform.xy + anchor.y * globalTransform.yy + globalTransform.y)
+			* anchor.type
+
+		define markAboveLower       {.anchors {.above       [ta : new Anchor middle  XH        BASE]}}
+		define markAboveOper        {.anchors {.above       [ta : new Anchor middle  operTop   BASE]}}
+		define markAboveTack        {.anchors {.above       [ta : new Anchor middle  tackTop  BASE]}}
+		define markAbovePlus        {.anchors {.above       [ta : new Anchor middle  plusTop   BASE]}}
+		define markAboveCap         {.anchors {.above       [ta : new Anchor middle  CAP       BASE]}}
+		define markBelowLower       {.anchors {.below       [ta : new Anchor middle  DESCENDER BASE]}}
+		define markBelowTack        {.anchors {.below       [ta : new Anchor middle  tackBot  BASE]}}
+		define markBelowOper        {.anchors {.below       [ta : new Anchor middle  operBot   BASE]}}
+		define markBelowPlus        {.anchors {.below       [ta : new Anchor middle  plusBot   BASE]}}
+		define markBelowZero        {.anchors {.below       [ta : new Anchor middle  0         BASE]}}
+		define markToprightLower    {.anchors {.topright    [ta : new Anchor rightSB XH        BASE]}}
+		define markToprightCap      {.anchors {.topright    [ta : new Anchor rightSB CAP       BASE]}}
+		define markBottomrightLower {.anchors {.bottomright [ta : new Anchor rightSB DESCENDER BASE]}}
+		define markBottomrightZero  {.anchors {.bottomright [ta : new Anchor rightSB 0         BASE]}}
+
+		define [buildStandardMarkSet] : begin
+			local a : compsiteMarkSet.apply null arguments
+			set a.anchors.overlay : new Anchor
+				* [mix a.anchors.below.x a.anchors.above.x OVERLAYPOS]
+				* [mix a.anchors.below.y a.anchors.above.y OVERLAYPOS]
+				* BASE
+			set a.anchors.slash : new Anchor
+				* [mix a.anchors.below.x a.anchors.above.x 0.5]
+				* [mix a.anchors.below.y a.anchors.above.y 0.5]
+				* BASE
+			return a
+		
+		object
+			capital : buildStandardMarkSet markAboveCap markBelowZero markToprightCap markBottomrightZero
+			b       : buildStandardMarkSet markAboveCap markBelowZero markToprightCap markBottomrightZero
+			e       : buildStandardMarkSet markAboveLower markBelowZero markToprightLower markBottomrightZero
+			oper    : buildStandardMarkSet markAboveOper markBelowOper markToprightLower markBottomrightZero
+			tack    : buildStandardMarkSet markAboveTack markBelowTack markToprightLower markBottomrightZero
+			plus    : buildStandardMarkSet markAbovePlus markBelowPlus markToprightLower markBottomrightZero
+			p       : buildStandardMarkSet markAboveLower markBelowLower markToprightLower markBottomrightLower
+			if      : buildStandardMarkSet markAboveCap markBelowLower markToprightCap markBottomrightLower
+
+	define markset : MarksetDiv 1
+
+	define [DivFrame _div _hPack] : begin
+		local div : fallback _div 1
+		local hPack : Math.max 2 [fallback _hPack 0]
+		local sbMul : Math.min 1 : (WIDTH * div - hPack * [adviceBlackness hPack div]) / (2 * hPack * SB)
+		return : object
+			div div
+			width : WIDTH * div
+			middle : MIDDLE * div
+			sb : SB * sbMul
+			leftSB : SB * sbMul
+			rightSB : WIDTH * div - SB * sbMul
+			mvs : MVERTSTROKE_D div
+			markSet: MarksetDiv div
+
+	### Glyph slots and dependency profile generation (used for recursive subfonts)
+	local dependencyProfile {.}
+	local nTemp 0
+	define [newtemp] : set nTemp (nTemp + 1)
+	local nPending 0
+	local pickHash : if recursive
+		then : let [h {.}] : begin
+			foreach j [items-of recursive] : set h.(j) j
+			set nPending recursive.length
+			* h
+		else nothing
+	define [getDependencyProfile glyph] : begin
+		local dp {}
+		foreach d [items-of glyph.dependencies] : begin
+			dp.push d
+			if dependencyProfile.(d): foreach [k : items-of dependencyProfile.(d)] : dp.push k
+		return dp
+	define [create-glyph] : match [Array.prototype.slice.call arguments 0]
+		`[@name @actions] : begin
+			if (pickHash && [not pickHash.(name)]) : return nothing
+
+			if para.verbose : console.log name
+			local glyphObject [new Glyph name]
+			glyphList.push glyphObject
+			glyphs.(name) = glyphObject
+			glyphObject.set-width WIDTH
+			glyphObject.gizmo = globalTransform
+
+			actions.call glyphObject
+
+			set dependencyProfile.(name) : getDependencyProfile glyphObject
+			dec nPending
+			return glyphObject
+
+		`[@actions] : begin
+			local glyphName ('.temp-' + [newtemp])
+			if para.verbose : console.log glyphName
+			local glyphObject [new Glyph glyphName]
+			glyphObject.set-width WIDTH
+			glyphObject.gizmo = globalTransform
+			actions.call glyphObject
+			return glyphObject
+
+	define [$save$ _name unicode] : begin
+		define t this
+		define name : if [not _name] ('--autoname-' + [newtemp]) _name
+		local g : create-glyph name [lambda]
+		if g : begin
+			g.include t AS_BASE
+			if (t <@ Glyph) : begin
+				set g.advanceWidth t.advanceWidth
+				set g.shortName t.shortName
+				set g.cmpPriority t.cmpPriority
+			if name : set dependencyProfile.(name) : getDependencyProfile g
+		if (g && unicode) : begin
+			g.assign-unicode unicode
+			set unicodeGlyphs.(g.unicode.((g.unicode.length - 1))) g
+		return g
+	
+	define [save-glyph name unicode g] : $save$.call g name unicode
+
+	### Spiro constructions
+	# Basic knots
+	define spirofns : spirokit.SetupBuilders : object globalTransform CONTRAST STROKE Glyph para SUPERNESS
+
+	###### HERE WE GO!
+	### Metadata
+	assignFontNames para metrics font
+	setFontMetrics para metrics font
+
+	# Necessary notdef, .null and nonmarkingreturn glyph
+	sketch # .notdef
+		start-from SB 0
+		line-to    SB CAP
+		line-to    RIGHTSB CAP
+		line-to    RIGHTSB 0
+
+		start-from (SB + STROKE) STROKE
+		line-to    (RIGHTSB - STROKE) STROKE
+		line-to    (RIGHTSB - STROKE) (CAP - STROKE)
+		line-to    (SB + STROKE) (CAP - STROKE)
+		set currentGlyph.cmpPriority (9999)
+		save '.notdef'
+	sketch # .null
+		set-width 0
+		set currentGlyph.cmpPriority (9998)
+		save '.null'
+	sketch # nonmarkingreturn
+		set-width WIDTH
+		set currentGlyph.cmpPriority (-1)
+		save 'nonmarkingreturn' 0x000D
+
+	# Space
+	sketch # space
+		local df : DivFrame para.diversityF
+		set-width df.width
+		include df.markSet.e
+		save 'space' ' '
+	
+	# IDKY, but wrapping "metrics" prevents Node.js on Arch modifying it.
+	define capture : object [metrics : Object.create metrics] $NamedParameterPair$ $donothing$ para recursive recursiveCodes variantSelector font glyphs glyphList unicodeGlyphs create-glyph $save$ save-glyph spirofns markset MARK BASE AS_BASE ALSO_METRICS pickHash dependencyProfile getDependencyProfile buildFont newtemp tagged TempFont includeGlyphPart compsiteMarkSet MarksetDiv DivFrame
+
+	### HERE WE GO
+	set capture.commonShapes : [import '../glyphs/common-shapes.js'].apply.call capture
+	set capture.overmarks : [import '../glyphs/overmarks.js'].apply.call capture
+
+	# Unified letters
+	set capture.letterBasic : [import '../glyphs/letters-unified-basic.js'].apply.call capture
+	set capture.letterExt : [import '../glyphs/letters-unified-extended.js'].apply.call capture
+
+	# Numbers
+	[import '../glyphs/numbers.js'].apply.call capture
+
+	# Symbols
+	[import '../glyphs/symbol-punctuation.js'].apply.call capture
+	set capture.geometricSymbols : [import '../glyphs/symbol-geometric.js'].apply.call capture
+	[import '../glyphs/symbol-math.js'].apply.call capture
+	[import '../glyphs/symbol-letter.js'].apply.call capture
+	[import '../glyphs/symbol-braille.js'].apply.call capture
+	[import '../glyphs/symbol-other.js'].apply.call capture
+	
+	# Autobuilds
+	[import '../glyphs/autobuilds.js'].apply.call capture
+
+	if [not recursive] : begin
+		set {.GSUB font.GSUB .GPOS font.GPOS .GDEF font.GDEF} : Features.apply para glyphs glyphList unicodeGlyphs
+
+	set font.glyfMap glyphs
+	return font

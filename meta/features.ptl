@@ -1,0 +1,296 @@
+import 'topsort' as topsort
+import '../support/glyph' as Glyph
+import '../support/transform' as Transform
+import [progLigNameMap buildLigations] from './feature/ligation'
+import './feature/opbd' as buildOPBD
+import './feature/ccmp' as buildCCMP
+
+define GDEF_SIMPLE 1
+define GDEF_LIGATURE 2
+define GDEF_MARK 3
+
+define-operator "~>" 880 'right' : syntax-rules
+	`(@l ~> @r) `{.left @l .right @r}
+
+# GSUB
+define [buildGSUB para glyphs glyphList markGlyphs] : begin
+	local commonList {}
+	local languages
+		.DFLT_DFLT {.features commonList}
+		.latn_DFLT {.features commonList}
+		.grek_DFLT {.features commonList}
+		.cyrl_DFLT {.features commonList}
+		.kana_DFLT {.features commonList}
+		.hani_DFLT {.features commonList}
+	local features {.}
+	local lookups {.}
+	local lookupOrder {}
+	
+	# Chaining lookup builder
+	define [lookup-single name f t] : begin
+		local subtable {.}
+		foreach [j : range 0 f.length] : set subtable.(f.(j)) t.(j)
+		set lookups.(name) {.type 'gsub_single' .subtables {subtable}}
+	define [getsublookup left right] : piecewise
+		[not right] null
+		([typeof right] === "string") right
+		(right <@ Function) : getsublookup left [right left]
+		true : begin
+			local found null
+			foreach [{name lookup} : pairs-of lookups] : match lookup
+				{.type "gsub_single" .subtables {st}} : begin
+					local check true
+					foreach [j : range 0 left.length] : if (st.(left.(j)) !== right.(j)) : set check false
+					if check : set found name
+			if found : return found
+			
+			local name "_lookup_\([Object.keys lookups].length)"
+			lookup-single name left right
+			return name
+	define [chain-rule] : begin
+		local terms : [{}.slice.call arguments 0].map (x -> [if x.left x (x ~> null)])
+		local subtable {.match {} .apply {} .inputBegins 0 .inputEnds 0}
+		local foundi false
+		local founde false
+		foreach [j : range 0 terms.length] : if (!foundi && terms.(j).right) : begin
+			set subtable.inputBegins j
+			set foundi true
+		foreach [j : range (terms.length - 1) downtill 0] : if (!founde && terms.(j).right) : begin
+			set subtable.inputEnds (j + 1)
+			set founde true
+		foreach [j : range 0 terms.length] : begin
+			local term terms.(j)
+			subtable.match.push term.left
+			local lutn : getsublookup term.left term.right
+			if lutn : subtable.apply.push {.at j .lookup lutn}
+		return subtable
+	
+	buildCCMP chain-rule markGlyphs commonList features lookups
+	if para.enableLigation : do
+		define plm : progLigNameMap
+		set plm.calt : para.customLigSet || plm.(para.defLigSet) || plm.calt
+		buildLigations chain-rule lookupOrder commonList features lookups plm glyphs
+	
+	# locl, SRB
+	local srbSubtable null
+	if para.isItalic
+	: then : set srbSubtable : object
+		cyrbe 'cyrbe.serbian'
+		cyrghe 'cyrghe.serbian'
+		cyrde 'cyrde.serbian'
+		cyrpe 'cyrpe.serbian'
+		cyrte 'cyrte.serbian'
+	: else : set srbSubtable : object
+		cyrbe 'cyrbe.serbian'
+	set lookups.locl_srb {.type 'gsub_single' .subtables {srbSubtable}}
+	set features.locl_srb {'locl_srb'}
+
+	# locl, BGR
+	local bgrSubtable : object
+		cyrve 'cyrve.BGR'
+		cyrghe 'cyrghe.italic'
+		cyrde 'g'
+		cyrzhe 'cyrzhe.BGR'
+		cyrze 'cyrze.BGR'
+		cyri 'u'
+		cyribreve 'ubreve'
+		cyrka 'k'
+		cyrEl 'Lambda'
+		cyrel 'turnv'
+		cyrpe 'n'
+		cyrte 'm'
+		cyrsha 'cyrsha.italic'
+		cyrshcha 'cyrshcha.italic'
+		cyryu 'cyryu.BGR'
+	set lookups.locl_bgr {.type 'gsub_single' .subtables {bgrSubtable}}
+	set features.locl_bgr {'locl_bgr'}
+
+	if para.enableCvSs : begin
+		# cvxx
+		foreach [glyph : items-of glyphList] : if glyph.featureSelector : begin
+			local fs glyph.featureSelector
+			foreach [feature : items-of : Object.keys fs] : begin
+				if [not lookups.(feature)] : begin
+					set features.(feature) {feature}
+					set lookups.(feature) {.type 'gsub_single' .subtables{{.}}}
+					commonList.push feature
+				set lookups.(feature).subtables.0.(glyph.name) fs.(feature)
+		# ssxx
+		foreach [{name composition} : pairs-of para.variants] : begin
+			if (name.length === 4 && composition.__isComposite && [name.slice 0 2] === 'ss') : begin
+				commonList.push name
+				local tags {.}
+				foreach [{ch tag} : pairs-of composition.__cvmap] : set tags.(tag) true
+				set features.(name) : [Object.keys tags].filter (tag => tags.(tag))
+
+	set languages.'cyrl_SRB ' {.features [{'locl_srb'}.concat commonList]}
+	set languages.'cyrl_MKD ' {.features [{'locl_srb'}.concat commonList]}
+	set languages.'cyrl_BGR ' {.features [{'locl_bgr'}.concat commonList]}
+
+	return {.languages languages .features features .lookups lookups .lookupOrder [topsort lookupOrder]}
+
+# GPOS
+define [buildGPOS para glyphs glyphList markGlyphs] : begin
+	local lookup_mark
+		.type 'gpos_mark_to_base'
+		.subtables {}
+	local lookup_mkmk
+		.type 'gpos_mark_to_mark'
+		.subtables {}
+	
+	# mark and mkmk
+	define [createBaseInfo g th px py] : begin
+		local res {.}
+		local pushed false
+		foreach key [items-of : Object.keys g.anchors] : if (!th || th.(key)) : begin
+			set res.(key) : object
+				.x g.anchors.(key).(px || 'x')
+				.y g.anchors.(key).(py || 'y')
+			set pushed true
+		return : if pushed res nothing
+		
+	define [createMTSSubtable lookup anchorClasses] : begin
+		local subtable {.marks {.} .bases {.}}
+		local th {.}
+		foreach [ac : items-of anchorClasses] : set th.(ac) true
+		foreach glyph [items-of glyphList] : if glyph.anchors : begin
+			local anchorKeys : Object.keys glyph.anchors
+			local hasAnchor false
+			foreach [key : items-of anchorKeys] : if th.(key) : set hasAnchor true
+			if hasAnchor : begin
+				local isMarkGlyph false
+				local markKey nothing
+				foreach key [items-of anchorKeys] : if (glyph.anchors.(key).type == 'mark') : begin
+					set isMarkGlyph true
+					set markKey key
+				if isMarkGlyph
+				: then : begin
+					set subtable.marks.(glyph.name) : object
+						class markKey
+						x glyph.anchors.(markKey).x
+						y glyph.anchors.(markKey).y
+					if (lookup == lookup_mkmk) : begin
+						local r : createBaseInfo glyph th 'mbx' 'mby'
+						if r : set subtable.bases.(glyph.name) r
+				: else : if (lookup == lookup_mark) : begin
+					local r : createBaseInfo glyph th 'x' 'y'
+					if r : set subtable.bases.(glyph.name) r
+		lookup.subtables.push subtable
+	
+	foreach [marktag : items-of {'above' 'below' 'overlay' 'slash' 'topright' 'bottomright' 'trailing' 'lf'}] : begin
+		createMTSSubtable lookup_mark {marktag}
+		createMTSSubtable lookup_mkmk {marktag}
+	
+	return : object
+		languages
+			.DFLT_DFLT {.features {'mark0', 'mkmk0'}}
+			.latn_DFLT {.features {'mark0', 'mkmk0'}}
+			.grek_DFLT {.features {'mark0', 'mkmk0'}}
+			.cyrl_DFLT {.features {'mark0', 'mkmk0'}}
+		features
+			.mark0 {'l_mark'}
+			.mkmk0 {'l_mkmk'}
+		lookups
+			.l_mark lookup_mark
+			.l_mkmk lookup_mkmk
+
+# GDEF
+define [buildGDEF para glyphs glyphList markGlyphs] : begin
+	local GDEF {.glyphClassDef {.}}
+	foreach glyph [items-of glyphList] : begin
+		set GDEF.glyphClassDef.(glyph.name) : if [[regex '_'].test glyph.name] GDEF_LIGATURE GDEF_SIMPLE
+		if (glyph.anchors && [begin [local anchorKeys : Object.keys glyph.anchors] anchorKeys.length]) : begin
+			foreach key [items-of anchorKeys] : if (glyph.anchors.(key).type == 'mark') : begin
+				if [not markGlyphs.(key)] : set markGlyphs.(key) {}
+				markGlyphs.(key).push glyph.name
+				markGlyphs.all.push glyph.name
+				set GDEF.glyphClassDef.(glyph.name) GDEF_MARK
+	return GDEF
+
+# Compatibility ligatures
+define [interpretLookups gs lutns lookups] : begin
+	foreach [lutn : items-of lutns] : begin
+		local lut lookups.(lutn)
+		interpretLookup gs lut lookups
+
+define [interpretLookup gs lut lookups] : match lut.type
+	"gsub_chaining" : begin
+		local j 0
+		while (j < gs.length) : begin
+			local incN 1
+			do : foreach [subtable : items-of lut.subtables] : begin
+				local matchT subtable.match
+				local ib subtable.inputBegins
+				local foundMatch true
+				for [local k 0] (foundMatch && k < matchT.length) [inc k] : begin
+					if [not gs.(j + k - ib)]
+					: then : set foundMatch false
+					: else : if ([matchT.(k).indexOf gs.(j + k - ib)] < 0) : set foundMatch false
+				if foundMatch : begin
+					foreach [app : items-of subtable.apply] : do
+						local aj : j - ib + app.at
+						local alut lookups.(app.lookup)
+						interpretLookupAt gs aj alut
+					set incN : incN + subtable.inputEnds - subtable.inputBegins
+					break nothing
+			set j : j + incN
+	"gsub_reverse" : begin
+		local j (gs.length - 1)
+		while (j >= 0) : begin
+			do : foreach [subtable : items-of lut.subtables] : begin
+				local matchT subtable.match
+				local ib subtable.inputIndex
+				local foundMatch true
+				for [local k 0] (foundMatch && k < matchT.length) [inc k] : begin
+					if [not gs.(j + k - ib)]
+					: then : set foundMatch false
+					: else : if ([matchT.(k).indexOf gs.(j + k - ib)] < 0) : set foundMatch false
+				if foundMatch : begin
+					set gs.(j) : subtable.to.[matchT.(ib).indexOf gs.(j)] || gs.(j)
+			set j : j - 1
+	"gsub_single" : begin
+		for [local j 0] (j < gs.length) [inc j] : begin
+			interpretLookupAt gs j lut
+
+define [interpretLookupAt gs j lut] : match lut.type
+	"gsub_single" : foreach [subtable : items-of lut.subtables] : begin
+		if subtable.(gs.(j)) : begin
+			set gs.(j) subtable.(gs.(j))
+
+export : define [apply para glyphs glyphList unicodeGlyphs] : begin
+	local markGlyphs {.all {} }
+	local GPOS : buildGPOS para glyphs glyphList markGlyphs
+	local GDEF : buildGDEF para glyphs glyphList markGlyphs
+	local GSUB : buildGSUB para glyphs glyphList markGlyphs
+
+	# Build compatibility ligatures
+	if (para.spacing > 0 && para.compLig) : foreach [cldef : items-of para.compLig] : do
+		if [not cldef.unicode] : break nothing
+		if [not cldef.featureTag] : break nothing
+		if [not GSUB.features.(cldef.featureTag)] : break nothing
+		if [not cldef.sequence] : break nothing
+
+		local gnames {}
+		for [local j 0] [j < cldef.sequence.length] [inc j] : begin
+			if [not unicodeGlyphs.[cldef.sequence.charCodeAt j]] : break nothing
+			gnames.push unicodeGlyphs.[cldef.sequence.charCodeAt j].name
+		
+		interpretLookups gnames GSUB.features.(cldef.featureTag) GSUB.lookups
+		
+		local g1 : new Glyph ('$clig.' + cldef.unicode)
+		set g1.advanceWidth 0
+		set g1.cmpPriority 1
+		set g1.unicode {cldef.unicode}
+		foreach [gn : items-of gnames] : begin
+			local g glyphs.(gn)
+			g1.apply-transform : new Transform 1 0 0 1 (-g1.advanceWidth) 0
+			g1.include g
+			g1.apply-transform : new Transform 1 0 0 1 (g1.advanceWidth) 0
+			set g1.advanceWidth : g1.advanceWidth + g.advanceWidth
+		
+		set glyphs.(g1.name) g1
+		set unicodeGlyphs.(cldef.unicode) g1
+		glyphList.push g1
+		set GDEF.glyphClassDef.(g1.name) GDEF_LIGATURE
+
+	return [object GSUB GPOS GDEF]

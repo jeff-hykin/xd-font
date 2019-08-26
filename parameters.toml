@@ -1,0 +1,562 @@
+[iosevka]
+copyright = 'Copyright (c) 2015-2019 Belleve Invis.'
+licence = '''This font software is licenced under the SIL Open Font Licence, Version 1.1. This is licence is avaliable with a FAQ at: http://scripts.sil.org/OFL. This font software is distributes on an 'AS IS' basis, without warranties or conditions of any kind, either express or implied. See the SIL Open Font licence fot the specific language, premissions and limitations governing your use of this font software.'''
+manufacturer = 'Belleve Invis'
+designer = 'Belleve Invis'
+description = 'Spatial efficient monospace font family for programming. Built from code. http://be5invis.github.io/Iosevka'
+
+leading = 1250     # Default line height times 1000.
+descenderPad = 65  # Additional line height, added to descender.
+width = 800        # Character width. Increase this if you think that Iosevka is too narrow.
+cap = 735          # Cap height (as well as ascender).
+xheight = 530      # X-height.
+#descender = -205  # Depth of descender. Currently unused.
+winMetricPad = 0   # Padding of Win metrics to avoid clipping. See #343
+
+ideoMid  = 365
+symbolMid = 365    # Center of parens, maths, geometrics...
+parenSize = 1066   # Size of parens, brackets, braces, slashes, etc.
+operSize = 852     # Size of "taller" mathematical operators (cups, etc.)
+tackSize = 800     # Size of logical operators (tacks, etc.)
+
+contrast = 1.11111 # Stroke width contrast.
+essx = 1.12        # Contrast of the middle of 'S'.
+
+slantAngle = 0     # Slant angle, in degrees.
+
+accent = 155       # Height of accent marks.
+accentx = 200      # Width of accent marks.
+overshoot = -8     # Vertical overshoot for arcs.
+overshootx = -8    # Horizontal overshoot for arcs.
+oxhook = -5        # Horizontal overshoot for hook tips.
+fovershoot = -40   # Overshoot of the top end of italic `f`.
+
+longjut = 175      # Length of long serifs, like that in `i`.
+jut = 85           # Length of short serifs, used in Slab only.
+vjut = 145         # Length of vertical serifs, used in Slab only.
+
+smooth = 195       # Vertical arc size in capital letters.
+smallsmooth = 220  # Vertical arc size in lowercase letters.
+smoothadjust = 120 # Parameter to balance arcs in slanted shapes.
+superness = 2.2    # Superness of arcs.
+
+barpos = 0.525       # Position of the middle bar in most letters, like `E`.
+overlaypos = 0.52    # Position of the overlay mark.
+ebarpos = 0.50       # Position of the middle bar in `e`.
+gbarpos = 0.42
+pbarpos = 0.53
+fivebarpos = 0.64
+fbarpos = 0.91       # Position of the middle bar in `f`
+fbarStrokeAdj = 0.25 # Portion of the fill above the f-bar position
+
+hook  = 155        # Hook depth in most letters.
+ahook = 130
+shook = 110
+jhook = 135
+fhook = 120
+rhook = 90
+hookx = 170
+
+tbalance = 50
+tbalance2 = 30
+rbalance = 60
+rbalance2 = 15
+jbalance = 63
+fbalance = 6
+onebalance = 30
+
+isItalic = false   # Use italic shapes?
+isOblique = false  # Use oblique shapes?
+
+lllcrowdedness = 3.33333333
+
+spacing = 1 # Spacing indicator
+
+# Powerline-specific parameters
+powerlineScaleY = 1 # Vertical scale
+powerlineScaleX = 1 # Horizontal scale
+powerlineShiftY = 0 # Vertical shift
+powerlineShiftX = 0 # Horizontal shift
+
+# Full-width codes
+fullwidth_codes = []
+
+# Diversity widths
+diversityM = 1
+diversityF = 1
+diversityI = 1
+diversityII = 1
+
+# Whether to generate CV-SS features
+enableCvSs = true
+
+# Whether to generate ligation
+enableLigation = true
+
+[verbose]
+verbose = true
+
+### Weights
+[w-100]
+stroke = 18
+sb = 72
+dotsize = 53
+periodsize = 55
+
+cthin = 0.9
+cthinb = 0.9
+vtipfine = 1
+shoulderfine = 0.8
+pbarpos = 0.5
+
+[w-200]
+stroke = 36
+sb = 68
+dotsize = 70
+periodsize = 77
+
+cthin = 0.75
+cthinb = 0.75
+vtipfine = 1
+pbarpos = 0.5
+
+[w-300]
+stroke = 56
+sb = 64
+dotsize = 100
+periodsize = 115
+
+vtipfine = 0.9
+pbarpos = 0.51
+
+[w-400]
+sb = 60            # Side bearing.
+stroke = 72        # Stroke width of horizontal strokes.
+dotsize = 125      # "Visual" size of dots in /i.
+periodsize = 140   # "Visual" size of period.
+
+[w-500]
+sb = 57
+stroke = 84
+dotsize = 135
+periodsize = 160
+smooth = 200
+
+[w-600]
+sb = 54
+stroke = 97
+dotsize = 145
+periodsize = 168
+essx = 1.07
+
+rbalance = 55
+rbalance2 = 20
+smooth = 203
+
+[w-700]
+sb = 50
+stroke = 106
+dotsize = 157
+periodsize = 180
+essx = 1.06
+essxq = 1.10
+jut = 89
+vjut = 158
+
+barpos = 0.51
+fivebarpos = 0.64
+rbalance = 52
+rbalance2 = 23
+rhook = 95
+smooth = 206
+
+[w-800]
+sb = 45
+stroke = 116
+dotsize = 167
+periodsize = 188
+essx = 1.05
+essxq = 1.15
+jut = 96
+vjut = 172
+
+barpos = 0.51
+fivebarpos = 0.64
+rbalance = 50
+rbalance2 = 25
+rhook = 97
+smooth = 210
+
+[w-900]
+sb = 42
+stroke = 126
+dotsize = 180
+periodsize = 200
+essx = 1.03
+essxq = 1.15
+jut = 100
+vjut = 175
+
+barpos = 0.51
+fivebarpos = 0.64
+rbalance = 50
+rbalance2 = 25
+rhook = 105
+smooth = 215
+
+### Slantness
+[s-italic]
+isItalic = true
+slantAngle = 10
+jhook = 120
+
+[s-oblique]
+isOblique = true
+slantAngle = 10
+jhook = 120
+
+### Slab variant
+[slab]
+slab = true
+onebalance = 10
+overshootx = -16
+[slab.multiplies]
+sb = 1.1
+
+### Spacings
+[term]
+spacing = 0
+enableLigation = false
+
+# Term variant with ligations
+[termlig]
+spacing = 0
+
+[type]
+inherits = ["xx-type"]
+spacing = 2
+
+[cc]
+inherits = ["xx-cc"]
+spacing = 3
+
+###### Widths
+# NOTE: this section is highly experimental
+# HANDLE WITH EXTREME CARE
+# Expanded : I heard someone want it being wider...
+[wd-expanded.multiplies]
+width = 1.152 # 576mem for normal char
+sb    = 1.375
+[expanded]
+inherits = ['wd-expanded']
+
+# Compressed : And someone else want it being narrower
+[wd-compressed.multiplies]
+width = 0.9
+sb = 0.9
+[compressed]
+inherits = ['wd-compressed']
+
+# EXPERIMENTAL EXPERIMENTAL EXPERIMENTAL
+# Diversity: Having more width variations
+[shape-straight-bar]
+straightBar = 1
+
+[diversity-1]
+diversityM = 1.25
+diversityF = 1.00
+diversityI = 0.75
+diversityII = 0.75
+
+[diversity-2]
+diversityM = 1.25
+diversityF = 0.75
+diversityI = 0.75
+diversityII = 0.5
+
+[no-ligation]
+enableLigation = false
+[nolig] # For compatibility
+enableLigation = false
+
+[no-cv-ss]
+enableCvSs = false
+
+###### Full-width codes
+[xx-type]
+spacing = 2
+[xx-type.appends]
+fullwidth_codes = [
+	8212, #—
+	8251, #※
+	# 8451, #℃
+	8719, #∏
+	8720,
+	8721, #∑
+	8733, #∝
+	8734, #∞
+	8736, #∠
+	8748, #∫∫
+	8749, #∫∫∫
+	8978, #⌒
+	8896,8897,8898,8899
+]
+
+[xx-cc]
+inherits = ["xx-type"]
+spacing = 3
+[xx-cc.appends]
+fullwidth_codes = [
+	164, #¤
+	177, #±
+	215, #×
+	247, #÷
+	711, #ˇ
+	713, #ˉ
+	167, #§
+	8741, #∥
+	8743, #∧
+	8744, #∨
+	8745, #∩
+	8746, #∪
+	8214, #‖
+	8242, #′
+	8243, #″
+	8747, #∫
+	8750, #∮
+	8764, #∽
+	8765, #∽
+	8776, #≈
+	8780, #≌
+	8800, #≠
+	8801, #≡
+	8804, #≤
+	8805, #≥
+	8814, #≮
+	8815, #≯
+	8866, 
+	8867, 
+	8868, 
+	8869, #⊥
+	8816,8817,8834,8835,8836,8837,
+	8853, #⊕
+	8854,
+	8857, #⊙
+	8712, #∈
+]
+
+# Default ligation set configuration
+[ligset-haskell]
+defLigSet = "XHS0"
+
+[ligset-idris]
+defLigSet = "XIDR"
+
+[ligset-elm]
+defLigSet = "XELM"
+
+[ligset-ml]
+defLigSet = "XML0"
+
+[ligset-fs]
+defLigSet = "XFS0"
+
+[ligset-fstar]
+defLigSet = "XFST"
+
+[ligset-swift]
+defLigSet = "SWFT"
+
+[ligset-purescript]
+defLigSet = "PURS"
+
+[ligset-coq]
+defLigSet = "XV00"
+
+[calt-clear]
+customLigSet = []
+[calt-center-ops.appends]
+customLigSet = ['center-ops']
+[calt-arrow.appends]
+customLigSet = ["arrow"]
+[calt-trig.appends]
+customLigSet = ["trig"]
+[calt-eqeq.appends]
+customLigSet = ["eqeq"]
+[calt-ineq.appends]
+customLigSet = ["ineq"]
+[calt-exeq.appends]
+customLigSet = ["exeq"]
+[calt-slasheq.appends]
+customLigSet = ["slasheq"]
+[calt-brst.appends]
+customLigSet = ["brst"]
+[calt-plusplus.appends]
+customLigSet = ["plusplus"]
+[calt-colons.appends]
+customLigSet = ["colons"]
+[calt-logic.appends]
+customLigSet = ["logic"]
+[calt-arrow2.appends]
+customLigSet = ["arrow2"]
+[calt-llgg.appends]
+customLigSet = ["llgg"]
+[calt-dotoper.appends]
+customLigSet = ["dotoper"]
+[calt-arrowZALE.appends]
+customLigSet = ["arrowZALE"]
+[calt-arrowZAGE.appends]
+customLigSet = ["arrowZAGE"]
+[calt-html-comment.appends]
+customLigSet = ["html-comment"]
+
+
+###### Leading
+[leading-750]
+leading = 750
+[leading-1000]
+leading = 1000
+[leading-1250]
+leading = 1250
+[leading-1500]
+leading = 1500
+[leading-1750]
+leading = 1750
+[leading-2000]
+leading = 2000
+
+###### Win metric pad
+[win-metric-pad-0]
+winMetricPad = 0
+[win-metric-pad-50]
+winMetricPad = 50
+[win-metric-pad-100]
+winMetricPad = 100
+[win-metric-pad-150]
+winMetricPad = 150
+[win-metric-pad-200]
+winMetricPad = 200
+[win-metric-pad-250]
+winMetricPad = 250
+[win-metric-pad-300]
+winMetricPad = 300
+
+###### Powerline
+[powerline-scale-y-750]
+powerlineScaleY = 0.75
+[powerline-scale-y-875]
+powerlineScaleY = 0.875
+[powerline-scale-y-1000]
+powerlineScaleY = 1
+[powerline-scale-y-1125]
+powerlineScaleY = 1.125
+[powerline-scale-y-1250]
+powerlineScaleY = 1.25
+[powerline-scale-y-1375]
+powerlineScaleY = 1.375
+[powerline-scale-y-1500]
+powerlineScaleY = 1.5
+[powerline-scale-x-750]
+powerlineScaleX = 0.75
+[powerline-scale-x-875]
+powerlineScaleX = 0.875
+[powerline-scale-x-1000]
+powerlineScaleX = 1
+[powerline-scale-x-1125]
+powerlineScaleX = 1.125
+[powerline-scale-x-1250]
+powerlineScaleX = 1.25
+[powerline-scale-x-1375]
+powerlineScaleX = 1.375
+[powerline-scale-x-1500]
+powerlineScaleX = 1.5
+[powerline-shift-y-n500]
+powerlineShiftY = -500
+[powerline-shift-y-n450]
+powerlineShiftY = -450
+[powerline-shift-y-n400]
+powerlineShiftY = -400
+[powerline-shift-y-n350]
+powerlineShiftY = -350
+[powerline-shift-y-n300]
+powerlineShiftY = -300
+[powerline-shift-y-n250]
+powerlineShiftY = -250
+[powerline-shift-y-n200]
+powerlineShiftY = -200
+[powerline-shift-y-n150]
+powerlineShiftY = -150
+[powerline-shift-y-n100]
+powerlineShiftY = -100
+[powerline-shift-y-n50]
+powerlineShiftY = -50
+[powerline-shift-y-0]
+powerlineShiftY = 0
+[powerline-shift-y-p50]
+powerlineShiftY = 50
+[powerline-shift-y-p100]
+powerlineShiftY = 100
+[powerline-shift-y-p150]
+powerlineShiftY = 150
+[powerline-shift-y-p200]
+powerlineShiftY = 200
+[powerline-shift-y-p250]
+powerlineShiftY = 250
+[powerline-shift-y-p300]
+powerlineShiftY = 300
+[powerline-shift-y-p350]
+powerlineShiftY = 350
+[powerline-shift-y-p400]
+powerlineShiftY = 400
+[powerline-shift-y-p450]
+powerlineShiftY = 450
+[powerline-shift-y-p500]
+powerlineShiftY = 500
+[powerline-shift-x-n500]
+powerlineShiftX = -500
+[powerline-shift-x-n450]
+powerlineShiftX = -450
+[powerline-shift-x-n400]
+powerlineShiftX = -400
+[powerline-shift-x-n350]
+powerlineShiftX = -350
+[powerline-shift-x-n300]
+powerlineShiftX = -300
+[powerline-shift-x-n250]
+powerlineShiftX = -250
+[powerline-shift-x-n200]
+powerlineShiftX = -200
+[powerline-shift-x-n150]
+powerlineShiftX = -150
+[powerline-shift-x-n100]
+powerlineShiftX = -100
+[powerline-shift-x-n50]
+powerlineShiftX = -50
+[powerline-shift-x-0]
+powerlineShiftX = 0
+[powerline-shift-x-p50]
+powerlineShiftX = 50
+[powerline-shift-x-p100]
+powerlineShiftX = 100
+[powerline-shift-x-p150]
+powerlineShiftX = 150
+[powerline-shift-x-p200]
+powerlineShiftX = 200
+[powerline-shift-x-p250]
+powerlineShiftX = 250
+[powerline-shift-x-p300]
+powerlineShiftX = 300
+[powerline-shift-x-p350]
+powerlineShiftX = 350
+[powerline-shift-x-p400]
+powerlineShiftX = 400
+[powerline-shift-x-p450]
+powerlineShiftX = 450
+[powerline-shift-x-p500]
+powerlineShiftX = 500
+
+# Compatibility PUA ligature sample
+# [[iosevka.compLig]]
+# unicode = 57600 # 0xE100
+# featureTag = 'XV00'
+# sequence = '<*>'
