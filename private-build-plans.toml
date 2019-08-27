@@ -14,9 +14,9 @@ menu  = 200                            # Weight for menu name
 css   = 200                            # Weight for WebFont CSS
 
 [buildPlans.iosevka-custom.weights.bold]
-shape = 700
-menu  = 700
-css   = 700
+shape = 500
+menu  = 500
+css   = 500
 
 # Override default building slant sets
 # Format: <upright|italic|oblique> = <"normal"|"italic"|"oblique">
