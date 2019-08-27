@@ -9,9 +9,9 @@ oblique = ["oblique-only", "styles"]   # Oblique-only styles
 # When buildPlans.<plan name>.weights is absent
 # All weights would built and mapped to default shape/CSS
 [buildPlans.iosevka-custom.weights.regular]
-shape = 400                            # Weight for glyph shapes
-menu  = 400                            # Weight for menu name
-css   = 400                            # Weight for WebFont CSS
+shape = 200                            # Weight for glyph shapes
+menu  = 200                            # Weight for menu name
+css   = 200                            # Weight for WebFont CSS
 
 [buildPlans.iosevka-custom.weights.bold]
 shape = 700
