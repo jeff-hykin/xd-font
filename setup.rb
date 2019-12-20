@@ -3,6 +3,7 @@ require 'atk_toolbox'
 # Make sure node is installed
 Atk.run('jeff-hykin/install-node')
 
+system "npm install"
 
 def confirm(has, tool)
     if has
@@ -39,6 +40,11 @@ if OS.is?("mac")
     if !has_tff_autohint
         system 'brew install ttfautohint'
     end
+    
+    # todo: improve this method of avoiding the
+    # "dyld: Library not loaded: /usr/local/opt/icu4c/lib/libicui18n.61.dylib"
+    # bug
+    system "node || brew upgrade node && npm install"
 else
     if !has_otfcc || !has_tff_autohint
         raise <<-HEREDOC.remove_indent
@@ -58,4 +64,3 @@ else
     end
 end
 
-system "npm install"
