@@ -1,0 +1,23 @@
+(using_atk_version): 1.0
+(project):
+    name: XD Font
+    description: Customized version of Iosevka
+    
+    commands: &commands # if you dont know what the & means, see https://blog.daemonl.com/2016/02/yaml.html
+        build-custom: "npm run build -- contents::iosevka-custom"
+        build: verda -f verdafile.js
+        (setup): ruby setup.rb
+    
+    (advanced_setup):
+        (project_commands):
+            <<: *commands
+        # caveats for a specific OS
+        when(--os is 'mac'):
+            (project_commands):
+                <<: *commands
+        when(--os is 'windows'):
+            (project_commands):
+                <<: *commands
+        when(--os is 'linux'):
+            (project_commands):
+                <<: *commands
