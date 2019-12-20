@@ -1,7 +1,20 @@
 [buildPlans.iosevka-custom]            # <iosevka-custom> is your plan name
 family = "Iosevka Custom"              # Font menu family name
-design = ["common styles"]             # Common styles
-upright = ["upright-only", "styles"]   # Upright-only styles
+design = [
+    "common styles",
+    'v-y-curly',
+    'v-g-singlestorey',
+    'v-a-singlestorey',
+    'v-brace-straight'
+]
+upright = [
+    "upright-only",
+    "styles",
+    'v-y-curly',
+    'v-g-singlestorey',
+    'v-a-singlestorey',
+    'v-brace-straight'
+]
 italic = ["italic-only", "styles"]     # Italic-only styles
 oblique = ["oblique-only", "styles"]   # Oblique-only styles
 

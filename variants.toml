@@ -323,12 +323,20 @@ design = [
 	'others'
 ]
 upright = [
+    'v-y-curly',
+    'v-g-singlestorey',
+    'v-a-singlestorey',
+    'v-brace-straight',
 	'v-i-serifed',
 	'v-j-serifed',
 	'v-l-serifed',
 	'v-f-straight'
 ]
 italic = [
+    'v-y-curly',
+    'v-g-singlestorey',
+    'v-a-singlestorey',
+    'v-brace-straight',
 	'v-i-italic',
 	'v-j-serifed',
 	'v-l-italic',
