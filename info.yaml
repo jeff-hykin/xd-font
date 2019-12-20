@@ -5,7 +5,7 @@
     
     commands: &commands # if you dont know what the & means, see https://blog.daemonl.com/2016/02/yaml.html
         build-custom: "npm run build -- contents::iosevka-custom"
-        build: verda -f verdafile.js
+        build: npm run build
         (setup): ruby setup.rb
     
     (advanced_setup):
