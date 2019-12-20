@@ -57,3 +57,5 @@ else
         HEREDOC
     end
 end
+
+system "npm install"
