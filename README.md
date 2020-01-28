@@ -1,3 +1,12 @@
+# XD Font (A variant of Iosevka)
+
+![code](https://user-images.githubusercontent.com/17692058/73235382-e5b29b00-4153-11ea-98ac-3f288ee41780.png)
+![Ligations Sample](https://raw.githubusercontent.com/be5invis/Iosevka/master/images/ligations.png)
+
+# How do I use it?
+
+All of the compiled font files are in the `dist/` subfolder. See "Installation" below for how to install them on your OS.
+
 # Iosevka ![Version](https://img.shields.io/github/release/be5invis/Iosevka.svg) [![Patreon](https://img.shields.io/badge/donate-patreon-red.svg)](https://www.patreon.com/user?u=5787198) [![Donate](https://img.shields.io/badge/donate-alipay-orange.svg)](http://7xpdnl.dl1.z0.glb.clouddn.com/T1v4huXnleXXXXXXXX.png)
 
 Coders’ typeface, built from code.
@@ -35,8 +44,6 @@ Iosevka supports accessing all letter variants using OpenType features.
 ![Character Variants](https://raw.githubusercontent.com/be5invis/Iosevka/master/images/charvars.png)
 
 ### Ligations
-
-![Ligations Sample](https://raw.githubusercontent.com/be5invis/Iosevka/master/images/ligations.png)
 
 Iosevka’s default ligation set is assigned to `calt` feature, though not all of them are enabled by default.
 
