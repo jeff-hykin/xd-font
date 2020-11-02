@@ -97,101 +97,99 @@ enableLigation = true
 verbose = true
 
 ### Weights
-[w-100]
-stroke = 18
-sb = 72
-dotsize = 53
-periodsize = 55
 
-cthin = 0.9
-cthinb = 0.9
-vtipfine = 1
-shoulderfine = 0.8
+
+[w-100]  
+stroke = 18   
+sb = 72 
+dotsize = 53  
+periodsize = 55 
+cthin = 0.9 
+cthinb = 0.9 
+vtipfine = 1 
+shoulderfine = 0.8 
 pbarpos = 0.5
 
-[w-200]
-stroke = 36
-sb = 68
-dotsize = 70
-periodsize = 77
-
-cthin = 0.75
-cthinb = 0.75
-vtipfine = 1
+[w-200]  
+stroke = 20   
+sb = 68 
+dotsize = 63  
+periodsize = 63 
+cthin = 0.75 
+cthinb = 0.75 
+vtipfine = 1 
 pbarpos = 0.5
 
-[w-300]
-stroke = 56
-sb = 64
-dotsize = 100
-periodsize = 115
-
-vtipfine = 0.9
+[w-300]  
+stroke = 32   
+sb = 64 
+dotsize = 73  
+periodsize = 71 
+vtipfine = 0.9 
 pbarpos = 0.51
 
-[w-400]
-sb = 60            # Side bearing.
-stroke = 72        # Stroke width of horizontal strokes.
-dotsize = 125      # "Visual" size of dots in /i.
-periodsize = 140   # "Visual" size of period.
+[w-400]  
+stroke = 44   
+sb = 64 
+dotsize = 83  
+periodsize = 79   
 
-[w-500]
-sb = 57
-stroke = 84
-dotsize = 135
-periodsize = 160
+[w-500]  
+stroke = 56   
+sb = 64 
+dotsize = 94  
+periodsize = 87 
 smooth = 200
 
-[w-600]
-sb = 54
-stroke = 97
-dotsize = 145
-periodsize = 168
-essx = 1.07
-
-rbalance = 55
-rbalance2 = 20
+[w-600]  
+stroke = 62   
+sb = 54 
+dotsize = 105 
+periodsize = 95 
+essx = 1.07 
+rbalance = 55 
+rbalance2 = 20 
 smooth = 203
 
-[w-700]
-sb = 50
-stroke = 106
-dotsize = 157
-periodsize = 180
-essx = 1.06
-essxq = 1.10
-jut = 89
-vjut = 158
+[w-700]  
+stroke = 68   
+sb = 50 
+dotsize = 115 
+periodsize = 103 
+essx = 1.06 
+essxq = 1.10 
 
-barpos = 0.51
-fivebarpos = 0.64
-rbalance = 52
-rbalance2 = 23
-rhook = 95
+jut = 89 
+vjut = 158 
+barpos = 0.51 
+fivebarpos = 0.64 
+rbalance = 52 
+rbalance2 = 23 
+rhook = 95 
 smooth = 206
 
-[w-800]
-sb = 45
-stroke = 116
-dotsize = 167
-periodsize = 188
-essx = 1.05
-essxq = 1.15
-jut = 96
-vjut = 172
-
-barpos = 0.51
-fivebarpos = 0.64
-rbalance = 50
-rbalance2 = 25
-rhook = 97
+[w-800]  
+stroke = 70   
+sb = 45 
+dotsize = 120 
+periodsize = 111 
+essx = 1.05 
+essxq = 1.15 
+jut = 96 
+vjut = 172  
+barpos = 0.51 
+fivebarpos = 0.64 
+rbalance = 50 
+rbalance2 = 25 
+rhook = 97 
 smooth = 210
 
-[w-900]
-sb = 42
-stroke = 126
-dotsize = 180
-periodsize = 200
+[w-900]  
+stroke = 72   
+sb = 45 
+dotsize = 125 
+periodsize = 119   
+
 essx = 1.03
 essxq = 1.15
 jut = 100
