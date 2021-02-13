@@ -91,7 +91,9 @@ let
         ];
     };
     
-    subDepedencies = [];
+    subDepedencies = [
+        definitions.mainPackages.nodePackages.fkill-cli
+    ];
     
     # TODO: add support for the info.json to have OS-specific packages (if statement inside package inclusion)
     packagesForMacOnly = [] ++ definitions.mainPackages.lib.optionals (definitions.mainPackages.stdenv.isDarwin) (
