@@ -4,7 +4,7 @@
 # relevent link to the nix build-opencv: https://github.com/NixOS/nixpkgs/blob/193a6a2307b7b29aa11bee309d4aa41840686ab0/pkgs/development/libraries/opencv/4.x.nix#L258
 ls .venv &>/dev/null || python -m venv .venv
 export VIRTUAL_ENV="$PWD/.venv"
-export PATH="$PATH:$VIRTUAL_ENV/bin"
+export PATH="$VIRTUAL_ENV/bin:$PATH"
 
 function apt-ensure {
     required_pkg="$1"
