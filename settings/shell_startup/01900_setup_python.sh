@@ -20,8 +20,3 @@ function apt-ensure {
         sudo apt-get --yes install $required_pkg 
     fi
 }
-
-if [ -f "/etc/debian_version" ]; then    
-    # make sure lib32stdc is available
-    apt-ensure lib32stdc++6
-fi
