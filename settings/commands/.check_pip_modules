@@ -7,11 +7,11 @@ hash_check_name="pip_modules"
 function failed_check_command {
     # what to do when pip modules haven't been installed yet
     # only save the hash if the install is successful
-    python3 -m pip --disable-pip-version-check install -r "$file_to_watch"
+    python -m pip --disable-pip-version-check install -r "$file_to_watch"
 }
 function generate_file_command {
     # what to do when requirements file doesn't exist
-    python3 -m pip freeze > "$file_to_watch"
+    python -m pip freeze > "$file_to_watch"
 }
 
 echo "Running $name_of_check check"
