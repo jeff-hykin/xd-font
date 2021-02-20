@@ -608,6 +608,7 @@ settings/.cache/*
 # but keep the folder
 !settings/.cache/.keep
 !settings/home/.zshrc
+!settings/home/.zshenv
 settings/home/*
 settings/home/Library/Caches
 # dont remove these next one unless you want passwords to be public
