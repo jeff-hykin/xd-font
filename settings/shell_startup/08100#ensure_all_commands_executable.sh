@@ -1,2 +1,44 @@
 # make sure commands are executable
 chmod -R ugo+x "./settings/commands" &>/dev/null || sudo chmod -R ugo+x "./settings/commands" &>/dev/null
+
+# 
+# create aliases for all of the folders to allow recursive execution
+# 
+# yes its ugly, welcome to bash programming
+for each in "./settings/commands/"*
+do
+    # if its a folder
+    if [[ -d "$each" ]]
+    then
+        local name="$(basename "$each")"
+        eval '
+        function '"$name"' {
+            local search_path='"'""$each"'/'"'"'
+            local argument_combination="$search_path/$1"
+            while [[ -n "$@" ]]
+            do
+                shift 1
+                for each in "$search_path/"**/*
+                do
+                    if [[ "$argument_combination" = "$each" ]]
+                    then
+                        # if its a folder, then we need to go deeper
+                        if [[ -d "$each" ]]
+                        then
+                            search_path="$each"
+                            argument_combination="$argument_combination/$1"
+                            break
+                        # if its a file, run it with the remaining arguments
+                        elif [[ -f "$each" ]]
+                        then
+                            "$each" $@
+                            # make exit status identical to executed program
+                            return $?
+                        fi
+                    fi
+                done
+            done
+        }
+        '
+    fi
+done
