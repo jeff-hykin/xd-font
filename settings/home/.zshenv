@@ -84,6 +84,8 @@ else
     # 
     source "$zsh_auto_suggest__path/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
     
+    # TODO: make this increase with depth, maybe use parent process: ps -o ppid= -p $$
+    SPACESHIP_CHAR_SYMBOL="∫ " # ☣ ⁂ ⌘ ∴ ∮ ֎ Ͽ ♫ ⛬ ⚿ ♦ ♢ ⛶ ✾ ❒ ⟩ ⟡ ⟜ ⟦ ⦊ ⦒ ⪢ ⪾ ∫ ∬ ∭
     SPACESHIP_VENV_SYMBOL="🐍$(python -V 2>&1 | sed -E 's/Python//g' )"
     SPACESHIP_VENV_PREFIX=""
     SPACESHIP_VENV_GENERIC_NAMES="."
