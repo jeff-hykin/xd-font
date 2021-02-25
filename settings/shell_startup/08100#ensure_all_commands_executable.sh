@@ -27,6 +27,15 @@ do
                         then
                             search_path="$each"
                             argument_combination="$argument_combination/$1"
+                            
+                            # if there is no next argument
+                            if [[ -z "$1" ]]
+                            then
+                                printf "\nThat is a sub folder, not a command\nValid sub-options are\n" 1>&2
+                                ls -1 --color -F "$each" | sed '"'"'s/^/    /'"'"' 1>&2
+                                return 1 # error, no command
+                            fi
+                            
                             break
                         # if its a file, run it with the remaining arguments
                         elif [[ -f "$each" ]]
@@ -38,6 +47,10 @@ do
                     fi
                 done
             done
+            printf "\nI could not find that sub command\n" 1>&2
+            printf "Valid options are:\n" 1>&2
+            ls -1 --color -F "$search_path" | sed '"'"'s/^/    /'"'"' 1>&2
+            return 1 # error, no command
         }
         '
     fi
