@@ -20,6 +20,10 @@ function git_sync { # git push && git pull
     fi
 }
 
+function git_current_branch_name {
+    git rev-parse --abbrev-ref HEAD
+}
+
 function git_force_push {
     args="$@"
     git push origin $args --force
@@ -29,13 +33,13 @@ function git_force_pull {
     # get the latest
     git fetch --all
     # delete changes
-    git_delete_changes
+    git_delete_changes &>/dev/null
     # reset to match origin
     git reset --hard "origin/$(git_current_branch_name)"
 }
 
 function git_new_branch {
-    git checkout master && git checkout -b "$@" && git push --set-upstream origin "$@"
+    git checkout "$(git_current_branch_name)" && git checkout -b "$@" && git push --set-upstream origin "$@"
 }
 
 # 
