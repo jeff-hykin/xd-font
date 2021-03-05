@@ -5,15 +5,12 @@ do
     # ensure all the git hook files exist
     touch "$git_file"
     # make sure each calls the hooks
-    cat "$git_file" | grep "#START: projectr hooks (don't delete unless you understand)"  &>/dev/null || echo "
+    cat "$git_file" | grep "#START: projectr hooks" &>/dev/null || echo "
         #START: projectr hooks (don't delete unless you understand)
         for hook in './settings/git/hooks/$(basename "$dir")/'*
         do
-            # check if file exists
-            if [[ -f "'"'"\$hook"'"'" ]]
-            then
-                source "'"'"\$hook"'"'"
-            fi
+            chmod ugo+x "'"'"\$hook"'"'" &>/dev/null || sudo chmod ugo+x "'"'"\$hook"'"'"
+            ./"'"'"\$hook"'"'" || echo "'"'"problem running: \$hook"'"'"
         done
         #END: projectr hooks (don't delete unless you understand)
     " >> "$git_file"
