@@ -1,10 +1,20 @@
 #!/usr/bin/env bash
-echo "What is the url to the mixin?"
-read url
+
+# 
+# get url
+# 
+if [[ -z "$1" ]]
+then    
+    echo "What is the url to the mixin?"
+    read url
+else
+    url="$1"
+fi
 
 # remove any leftover ones (caused by git merge conflicts)
 git remote remove __mixin__ &>/dev/null
 git remote add __mixin__ "$url"
-git fetch __mixin__ --tags
-git merge --allow-unrelated-histories __mixin__/master
+git fetch __mixin__ --tags 
+git pull --allow-unrelated-histories __mixin__/master
+git submodule update --init --recursive
 git remote remove __mixin__ &>/dev/null
