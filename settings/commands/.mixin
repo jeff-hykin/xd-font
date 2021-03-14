@@ -15,5 +15,6 @@ fi
 git remote remove __mixin__ &>/dev/null
 git remote add __mixin__ "$url"
 git fetch __mixin__ --tags 
-git pull --allow-unrelated-histories --recurse-submodules __mixin__/master
+git pull --allow-unrelated-histories __mixin__/master
+git submodule update --init --recursive
 git remote remove __mixin__ &>/dev/null
