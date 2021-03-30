@@ -20,6 +20,8 @@ The managed environment is very reliable way to setup.<br>
 * Install [nix](https://nixos.org/guides/install-nix.html), more detailed guide [here](https://nixos.org/manual/nix/stable/#chap-installation)
     * Just run the following in your console/terminal app
         * `sudo apt-get update 2>/dev/null`
+        * If you're on MacOS Big Sur
+            *  see [this](https://duan.ca/2020/12/13/nix-on-macos-11-big-sur/) tutorial
         * If you're on MacOS Catalina, run:
             * `sh <(curl -L https://nixos.org/nix/install) --darwin-use-unencrypted-nix-store-volume `
         * If you're not, run:
