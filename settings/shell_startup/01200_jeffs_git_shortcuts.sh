@@ -1,4 +1,7 @@
-# version 2.0 is at least the minimum (may have a higher minimum)
+# version 2.0 is at least the minimum (may have a higher minimum like 2.21)
+
+# this is not actually global because the home var is changed
+git config --global core.editor nano 
 
 function git_log {
     git log --oneline
