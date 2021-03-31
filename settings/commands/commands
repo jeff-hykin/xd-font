@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-echo "project commands:"
-tree ./settings/commands -C --dirsfirst  -A -F --noreport | sed 's/^/    /' | sed 's/\.\/settings\/commands/    /'
-# print the node commands
-node -e 'try { Object.keys(require("./package.json").scripts).forEach(each=>console.log(`    npm run ${each}`))}catch(e){}'  
+    echo "project commands:"
+    tree ./settings/commands -C --dirsfirst  -A -F --noreport | sed 's/^/    /' | sed 's/\.\/settings\/commands/    /'
+    # print the node commands
+    node -e 'try { Object.keys(require("./package.json").scripts).forEach(each=>console.log(`    npm run ${each}`))}catch(e){}'
+    
