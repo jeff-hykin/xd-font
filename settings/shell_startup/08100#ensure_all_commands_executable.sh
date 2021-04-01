@@ -40,7 +40,7 @@ do
                         # if its a file, run it with the remaining arguments
                         elif [[ -f "$each" ]]
                         then
-                            "$each" $@
+                            "$each" "$@"
                             # make exit status identical to executed program
                             return $?
                         fi
