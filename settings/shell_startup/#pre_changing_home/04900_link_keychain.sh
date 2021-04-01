@@ -7,4 +7,4 @@ if [[ -d "$path_to_keychain" ]]; then
 fi
 
 # Make sure the user doesn't accidentally commit their keys/passwords!!
-add_to_gitignore "$PROJECT_HOME/Library/Keychains"
+./settings/commands/.add_to_gitignore "$PROJECT_HOME/Library/Keychains"
