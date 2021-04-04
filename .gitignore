@@ -1,7 +1,7 @@
 # 
 # Custom
 # 
-\.idea
+
 
 # 
 # standard
@@ -61,6 +61,7 @@ Temporary Items
 # visual studio projects
 *.cache/*
 **/*.cache/*
+\.idea
 
 # Windows thumbnail cache files
 Thumbs.db

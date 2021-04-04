@@ -80,12 +80,12 @@ function git_new_branch {
 }
 
 function git_delete_branch {
-    git push origin --delete $@
-    git branch -D $@
+    git push origin --delete "$@"
+    git branch -D "$@"
 }
 
 function git_delete_local_branch {
-    git branch -D $@
+    git branch -D "$@"
 }
 
 # 
