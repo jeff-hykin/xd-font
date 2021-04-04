@@ -17,13 +17,20 @@ do
     fi
 done
 
+# create a dummy home folder to prevent any problems when starting up
+__dummy_home="$PWD/settings/.cache/home/"
+rm -rf "$__dummy_home" > /dev/null
+mkdir -p "$__dummy_home/.cache/"
+# connect the nix cache to prevent duplicates
+ln -s "$HOME/.cache/nix" "$__dummy_home/.cache/nix" 
+
 # if there are arguments, treat it as a run command
 if [[ -n "$@" ]]
 then
     # they need to be wrapped, otherwise it wont work
     args="$@"
     # run single command
-    nix-shell --pure --run "zsh -c '$args'" "./settings/requirements/shell.nix"
+    HOME="$__dummy_home" nix-shell --pure --run "zsh -c '$args'" "./settings/requirements/shell.nix"
 else
-    nix-shell --pure --command "zsh" "./settings/requirements/shell.nix"
+    HOME="$__dummy_home" nix-shell --pure --command "zsh" "./settings/requirements/shell.nix"
 fi
