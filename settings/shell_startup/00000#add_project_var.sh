@@ -1,1 +1,1 @@
-export PROJECT_FOLDER="$PWD"
+export PROJECTR_FOLDER="$PWD"
