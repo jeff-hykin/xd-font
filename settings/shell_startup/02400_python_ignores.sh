@@ -1,5 +1,3 @@
-# NOTE: this depends on setup_tools (add_to_gitignore function) being in the shell_startup
-
-add_to_gitignore ".venv"
+"$PROJECT_FOLDER/settings/commands/.add_to_gitignore" ".venv"
 # python creates a cache here on MacOS
-add_to_gitignore "settings/home/Library/Caches"
+"$PROJECT_FOLDER/settings/commands/.add_to_gitignore" "settings/home/Library/Caches"
