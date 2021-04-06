@@ -4,8 +4,9 @@
 # the comments above^ are special
 #   they tell the system to process this using nix-shell
 #   specifically using the exact version of bash to use
-export PROJECTR_HOME="settings/home"
 export PROJECTR_FOLDER="$PWD"
+export PROJECTR_HOME="$PROJECTR_FOLDER/settings/home/"
+export PROJECTR_COMMANDS_FOLDER="$PROJECTR_FOLDER/settings/commands/"
 #
 # find and run all the startup scripts in alphabetical order
 #
