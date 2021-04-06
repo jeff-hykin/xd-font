@@ -3,4 +3,4 @@ cp "$HOME/.npmrc" "$PROJECTR_HOME/.npmrc" 2>/dev/null
 
 # make sure the user has this in their .npmrc
 # (it could contain passwords/keys)
-./settings/commands/.add_to_gitignore "$PROJECTR_HOME/.npmrc"
+"$PROJECTR_FOLDER/settings/commands/.add_to_gitignore" "$PROJECTR_HOME/.npmrc"
