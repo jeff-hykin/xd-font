@@ -12,11 +12,11 @@
 #   
 #   this can be useful for fixing corrupted setups
 
-unlink ./settings/home/.cache/nix
+unlink "$PROJECTR_FOLDER/home/.cache/nix"
 
 # the usual things
-rm -rfv ./settings/.cache **/*.cleanable **/*.cleanable.*
-mkdir -p ./settings/.cache && touch ./settings/.cache/.keep # restore the keep file
+rm -rfv "$PROJECTR_FOLDER/.cache" "$PROJECTR_FOLDER/"**/*.cleanable "$PROJECTR_FOLDER/"**/*.cleanable.*
+mkdir -p "$PROJECTR_FOLDER/.cache" && touch "$PROJECTR_FOLDER/.cache/.keep" # restore the keep file
 
 # python cache at any level (half second to rebuild these)
-rm -rf **/__pycache__
+rm -rf "$PROJECTR_FOLDER/"**/__pycache__
