@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-./settings/commands/.check_git_hooks
+"$PROJECTR_FOLDER/settings/commands/.check_git_hooks"
