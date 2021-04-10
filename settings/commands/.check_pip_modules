@@ -20,7 +20,7 @@ echo "Running $name_of_check check"
 if ! [[ -f "./$file_to_watch" ]]; then
     generate_file_command
 fi
-location_of_hash="./settings/.cache/.$hash_check_name.cleanable.hash"
+location_of_hash="$PROJECTR_FOLDER/settings/.cache/.$hash_check_name.cleanable.hash"
 if ! [[ -f "$location_of_hash" ]]; then
     # make sure the folder exists
     mkdir -p "$(dirname "$location_of_hash")"
