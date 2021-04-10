@@ -11,7 +11,7 @@ then
         touch "$git_file"
         # make sure each calls the hooks # FIXME: some single quotes in $dir probably need to be escaped here
         cat "$git_file" | grep "#START: projectr hooks" &>/dev/null || echo "
-        if [[ -n "'$PROJECTR_FOLDER'" ]]
+        if [[ -n "'"$PROJECTR_FOLDER"'" ]]
         then
             #START: projectr hooks (don't delete unless you understand)
             for hook in "'"$PROJECTR_FOLDER"'"'/settings/git/hooks/$(basename "$dir")/'*
