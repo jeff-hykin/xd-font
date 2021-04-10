@@ -1,7 +1,7 @@
 # ensure commands folder exists
-if ! [[ -d "./settings/commands" ]]; then
+if ! [[ -d "$PROJECTR_FOLDER/settings/commands" ]]; then
     # remove a potenial file
-    rm -f ./settings/commands
+    rm -f $PROJECTR_FOLDER/settings/commands
     # make the folder
-    mkdir ./settings/commands
+    mkdir $PROJECTR_FOLDER/settings/commands
 fi

@@ -106,17 +106,6 @@ in
         # we don't want to give nix or other apps our home folder
         if [[ "$HOME" != "$PROJECTR_HOME" ]] 
         then
-            #
-            # find and run all the startup scripts in alphabetical order
-            #
-            # for file in ./settings/shell_startup/#pre_changing_home/*
-            # do
-            #    # make sure its a file
-            #    if [[ -f "$file" ]]; then
-            #        source "$file"
-            #    fi
-            # done
-            
             mkdir -p "$PROJECTR_HOME/.cache/"
             ln -s "$HOME/.cache/nix" "$PROJECTR_HOME/.cache/" &>/dev/null
             

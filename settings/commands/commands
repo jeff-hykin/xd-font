@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
     echo "project commands:"
-    tree ./settings/commands -C --dirsfirst  -A -F --noreport | sed 's/^/    /' | sed 's/\.\/settings\/commands/    /'
+    tree "$PROJECTR_FOLDER/settings/commands" -C --dirsfirst  -A -F --noreport | sed 's/^/    /' | sed "1d"
     

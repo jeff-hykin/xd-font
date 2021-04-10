@@ -1,3 +1,3 @@
 echo ""
 echo ""
-./settings/commands/commands
+"$PROJECTR_FOLDER/settings/commands/commands"

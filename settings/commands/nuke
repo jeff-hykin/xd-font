@@ -18,7 +18,7 @@ fi
 unlink ./Library/Keychains &>/dev/null
 
 # clean all the small things
-./settings/commands/clean
+"$PROJECTR_FOLDER/settings/commands/clean"
 
 # the mac library cache
-rm -rfv ./settings/home/Library/Caches
+rm -rfv "$PROJECTR_FOLDER/settings/home/Library/Caches"

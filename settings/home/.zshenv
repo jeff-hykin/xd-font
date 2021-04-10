@@ -5,7 +5,7 @@ DISABLE_UPDATE_PROMPT="true"
 
 # load custom user settings
 # if user just wants to add something (like an export) and not replace everything
-# they should use ./settings/shell_startup/.dont-sync.exports.sh 
+# they should use settings/shell_startup/.dont-sync.exports.sh 
 CUSTOM_USER_SETTINGS="./.dont-sync.zshrc"
 if [[ -f "$CUSTOM_USER_SETTINGS" ]]; then
     source "$CUSTOM_USER_SETTINGS"
@@ -109,7 +109,7 @@ fi
 # 
 # find and run all the startup scripts in alphabetical order
 # 
-for file in ./settings/shell_startup/*
+for file in $PROJECTR_FOLDER/settings/shell_startup/*
 do
     # make sure its a file
     if [[ -f "$file" ]]; then
