@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# the commands command but for lazy people
+"$PROJECTR_COMMANDS_FOLDER/commands" "$@"

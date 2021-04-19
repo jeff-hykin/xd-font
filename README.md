@@ -15,6 +15,8 @@ Coders’ typeface, built from code.
 
 ## Installation
 
+You will find TTFs, as well as WOFF(2) web fonts and one Webfont CSS in the `dist/` directory.
+
 Quit your editor/program. Unzip and open the folder.
 
 * **Instructions for Windows**: Download the fonts from the [Releases](https://github.com/be5invis/Iosevka/releases), select the font files and right click, then hit "Install".
@@ -257,3 +259,7 @@ The current available styles for `design`/`upright`/`italic`/`oblique` options a
 ---
 
 ![Family Matrix](https://raw.githubusercontent.com/be5invis/Iosevka/master/images/matrix.png)
+
+# Setup
+
+Everything is detailed in the `documentation/SETUP.md`!

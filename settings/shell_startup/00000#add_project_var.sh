@@ -1,0 +1,1 @@
+export PROJECTR_FOLDER="$PWD"

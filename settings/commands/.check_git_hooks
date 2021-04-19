@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+__temp_var_githooks_folder="$PROJECTR_FOLDER/settings/git/hooks"
+# if the folder exists
+if [[ -d "$__temp_var_githooks_folder" ]]
+then
+    # iterate over the filess
+    for dir in "$__temp_var_githooks_folder"
+    do
+        git_file="$PROJECTR_FOLDER/.git/hooks/$(basename "$dir")"
+        # ensure all the git hook files exist
+        touch "$git_file"
+        # make sure each calls the hooks # FIXME: some single quotes in $dir probably need to be escaped here
+        cat "$git_file" | grep "#START: projectr hooks" &>/dev/null || echo "
+        if [[ -n "'"$PROJECTR_FOLDER"'" ]]
+        then
+            #START: projectr hooks (don't delete unless you understand)
+            for hook in "'"$PROJECTR_FOLDER"'"'/settings/git/hooks/$(basename "$dir")/'*
+            do
+                chmod ugo+x "'"'"\$hook"'"'" &>/dev/null || sudo chmod ugo+x "'"'"\$hook"'"'"
+                ./"'"'"\$hook"'"'" || echo "'"'"problem running: \$hook"'"'"
+            done
+            #END: projectr hooks (don't delete unless you understand)
+        fi
+        " >> "$git_file"
+        # ensure its executable
+        chmod ugo+x "$git_file" &>/dev/null || sudo chmod ugo+x "$git_file"
+    done
+fi
