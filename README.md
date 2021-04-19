@@ -1,70 +1,32 @@
-# XD Font (A variant of Iosevka)
+# XD Font 
+## (A variant of Iosevka [![Patreon](https://img.shields.io/badge/donate-patreon-red.svg)](https://www.patreon.com/user?u=5787198) [![Donate](https://img.shields.io/badge/donate-alipay-orange.svg)](http://7xpdnl.dl1.z0.glb.clouddn.com/T1v4huXnleXXXXXXXX.png) )
 
 ![code](https://user-images.githubusercontent.com/17692058/73235382-e5b29b00-4153-11ea-98ac-3f288ee41780.png)
-![Ligations Sample](https://raw.githubusercontent.com/be5invis/Iosevka/master/images/ligations.png)
+
+Note: Ligatures auto-change depending on the programming language
+![Ligations Sample](images/ligset-calt-1.png)
 
 # How do I use it?
 
-All of the compiled font files are in the `dist/` subfolder. See "Installation" below for how to install them on your OS.
-
-# Iosevka ![Version](https://img.shields.io/github/release/be5invis/Iosevka.svg) [![Patreon](https://img.shields.io/badge/donate-patreon-red.svg)](https://www.patreon.com/user?u=5787198) [![Donate](https://img.shields.io/badge/donate-alipay-orange.svg)](http://7xpdnl.dl1.z0.glb.clouddn.com/T1v4huXnleXXXXXXXX.png)
-
-Coders’ typeface, built from code.
-
-![](https://raw.githubusercontent.com/be5invis/Iosevka/master/images/preview-all.png)
-
-## Installation
-
-You will find TTFs, as well as WOFF(2) web fonts and one Webfont CSS in the `dist/` directory.
-
-Quit your editor/program. Unzip and open the folder.
-
-* **Instructions for Windows**: Download the fonts from the [Releases](https://github.com/be5invis/Iosevka/releases), select the font files and right click, then hit "Install".
-  * On Windows 10 1809 or newer the default font installation is per-user, and it may cause compatibility issues for some applications, mostly written in Java. To cope with this, right click and select "Install for all users" instead. [Ref.](https://youtrack.jetbrains.com/issue/JRE-1166?p=IDEA-200145)
-* **[Instructions for macOS](http://support.apple.com/kb/HT2509)**
-  * Standard distribution in Homebrew: `brew tap homebrew/cask-fonts && brew cask install font-iosevka` (May be outdated).
-  * Customizable install using Homebrew: see [robertgzr/homebrew-tap](https://github.com/robertgzr/homebrew-tap).
-* **Linux** : Copy the TTF files to your fonts directory → Run `sudo fc-cache`. 
-  - Arch Linux users can install the font from the AUR [here](https://aur.archlinux.org/packages/ttf-iosevka) using an AUR wrapper or by doing it manually. [All variants](https://aur.archlinux.org/packages/?O=0&SeB=nd&K=ttf-iosevka&SB=n&SO=a&PP=50&do_Search=Go).
-  - Void Linux users can install the font with `xbps-install font-iosevka`.
-* **FreeBSD**: The font can be installed with `pkg install iosevka`.
-
-## Weights, Variants and OpenType features
-
-The typeface contains 9 weights (Thin to Heavy) alongside with both italic and oblique versions, with the same metrics as the regular one. 
-
-![Weights sample](https://raw.githubusercontent.com/be5invis/Iosevka/master/images/weights.png)
-
-All versions include the same ranges of characters: Latin letters, Greek letters (including Polytonic), some Cyrillic letters, IPA symbols and common punctuations and some symbols. You can check out the full list [here](http://be5invis.github.io/Iosevka/specimen.html).
-
-![Languages Sample](https://raw.githubusercontent.com/be5invis/Iosevka/master/images/languages.png)
-
-Iosevka supports accessing all letter variants using OpenType features.
-
-![Style Sets](https://raw.githubusercontent.com/be5invis/Iosevka/master/images/stylesets.png)
-
-![Character Variants](https://raw.githubusercontent.com/be5invis/Iosevka/master/images/charvars.png)
-
-### Ligations
-
-Iosevka’s default ligation set is assigned to `calt` feature, though not all of them are enabled by default.
-
-Iosevka supports Language-Specific Ligations, which is the ligation set enabled only under certain languages. These ligation sets are assigned to custom feature tags, like `XHS0`.
-
-## Building from Source
-
-To build Iosevka you should:
-
-1. Ensure that [`nodejs`](http://nodejs.org) (≥ 8.4), [`ttfautohint`](http://www.freetype.org/ttfautohint/), [`otfcc`](https://github.com/caryll/otfcc) (≥ 0.9.3).
-2. Install necessary libs by `npm install`. If you’ve installed them, upgrade to the latest.
-3. `npm run build -- contents::iosevka`.
+- [Download](https://github.com/jeff-hykin/xd-font/archive/refs/heads/master.zip) or clone this repo
+- Font files are inside the `dist/` folder. 
+    - There's TTFs, WOFF(2), and CSS
+- Install the font based on where you want to use it!
+    - Mac
+        - [Instructions](http://support.apple.com/kb/HT2509)
+        - basically just open fontbook, drag and drop the ttf files, then restart the programs (or restart system to be safe)
+    - Windows
+        - [Instructions](https://www.technipages.com/windows-10-how-to-install-truetype-fonts)
+        - On Windows 10 1809 or newer the default font installation is per-user, and it may cause compatibility issues for some applications, mostly written in Java. To cope with this, right click and select "Install for all users" instead. [Ref.](https://youtrack.jetbrains.com/issue/JRE-1166?p=IDEA-200145)
+    - Linux
+        - Copy the TTF files to your fonts directory → Run `sudo fc-cache`. 
 
 
-You will find TTFs, as well as WOFF(2) web fonts and one Webfont CSS in the `dist/` directory.
+## How do I build it myself and customize it?
 
-## Build Your Own Style
+- Requirements setup is detailed inside `documentation/SETUP.md`!
 
-Since version 2.0, Iosevka would no longer support building via `makefile`. To initialize a custom build, you need:
+To initialize a custom build, you need:
 
 1. Create `private-build-plans.toml` file.
 
@@ -252,6 +214,31 @@ The current available styles for `design`/`upright`/`italic`/`oblique` options a
     * `v-numbersign-upright` : Number sign with vertical bars (default).
     * `v-numbersign-slanted` : Number sign with slanted bars.
 
+
+## Weights, Variants and OpenType features
+
+The typeface contains 9 weights (Thin to Heavy) alongside with both italic and oblique versions, with the same metrics as the regular one. 
+
+![Weights sample](https://raw.githubusercontent.com/be5invis/Iosevka/master/images/weights.png)
+
+All versions include the same ranges of characters: Latin letters, Greek letters (including Polytonic), some Cyrillic letters, IPA symbols and common punctuations and some symbols. You can check out the full list [here](http://be5invis.github.io/Iosevka/specimen.html).
+
+![Languages Sample](https://raw.githubusercontent.com/be5invis/Iosevka/master/images/languages.png)
+
+Iosevka supports accessing all letter variants using OpenType features.
+
+![Style Sets](https://raw.githubusercontent.com/be5invis/Iosevka/master/images/stylesets.png)
+
+![Character Variants](https://raw.githubusercontent.com/be5invis/Iosevka/master/images/charvars.png)
+
+### Ligations
+
+Iosevka’s default ligation set is assigned to `calt` feature, though not all of them are enabled by default.
+
+Iosevka supports Language-Specific Ligations, which is the ligation set enabled only under certain languages. These ligation sets are assigned to custom feature tags, like `XHS0`.
+
+You will find TTFs, as well as WOFF(2) web fonts and one Webfont CSS in the `dist/` directory.
+
 ## For Chinese and Japanese users...
 
 → [Sarasa Gothic](https://github.com/be5invis/Sarasa-Gothic).
@@ -259,7 +246,3 @@ The current available styles for `design`/`upright`/`italic`/`oblique` options a
 ---
 
 ![Family Matrix](https://raw.githubusercontent.com/be5invis/Iosevka/master/images/matrix.png)
-
-# Setup
-
-Everything is detailed in the `documentation/SETUP.md`!

@@ -32,18 +32,24 @@ The managed environment is very reliable way to setup.<br>
     * (if you don't have git just run `nix-env -i git`)
 * Clone/Open the project
     * `cd wherever-you-want-to-save-this-project`<br>
-    * `git clone https://github.com/jeff-hykin/cpp-textmate-grammar`
-    * `cd cpp-textmate-grammar`
+    * `git clone https://github.com/jeff-hykin/xd-font`
+    * `cd xd-font`
 * Actually run some code
     * run `./shell` to get into the project environment
         * Note: this will almost certainly take a while the first time because it will auto-install exact versions of everything: `node`, `python`, `ruby`, all modules for them, etc
-    * run `commands` to see all of the project commands
+    * run `npm run build -- contents::iosevka` to build the font
+    * if that works, you should have all requirements installed successfully!
 
 
 # Manual project setup
 
-- Install node and npm
-- Run `npm install`
-- Install python3
-- Install the python modules with `python3 -m pip install -r requirements.txt`
-- Run the script `./settings/commands/commands` to see avalible commands
+To build Iosevka you should:
+
+1. Ensure that [`nodejs`](http://nodejs.org) (≥ 8.4), [`ttfautohint`](http://www.freetype.org/ttfautohint/), [`otfcc`](https://github.com/caryll/otfcc) (≥ 0.9.3).
+    - Mac OS
+        - `sudo xcode-select -s /Applications/Xcode.app/Contents/Developer`
+        - `brew tap caryll/tap`
+        - `brew install otfcc-mac64`
+        - `brew install ttfautohint`
+2. Install necessary libs by `npm install`. If you’ve installed them, upgrade to the latest.
+3. `npm run build -- contents::iosevka`.
