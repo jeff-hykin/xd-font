@@ -13,6 +13,7 @@
 	},
 	"dependencies": {
 		"caryll-shapeops": "^0.3.1",
+		"converter-webfont": "^1.0.0",
 		"fonteditor-core": "^2.1.6",
 		"glob": "^7.1.6",
 		"libspiro-js": "^0.3.1",

@@ -1,0 +1,6 @@
+- create an otf version of the font
+- then use `fontforge -script ./icon_patcher/icon-patcher.py ./dist/iosevka-custom/otf/iosevka-custom-regular.otf --quiet` to patch in icons
+- problem1: can't auto generate .otft
+- problem2: can't combine all .ttf's into one .otf with icons
+- problem3: the generated otf doesnt have all the icons
+- problem4: why does not using `--quiet` cause an error
