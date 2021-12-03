@@ -1,5 +1,8 @@
 # XD Font 
-## (A variant of Iosevka [![Patreon](https://img.shields.io/badge/donate-patreon-red.svg)](https://www.patreon.com/user?u=5787198) [![Donate](https://img.shields.io/badge/donate-alipay-orange.svg)](http://7xpdnl.dl1.z0.glb.clouddn.com/T1v4huXnleXXXXXXXX.png) )
+## A variant of Iosevka 
+
+(Badges From Original Iosevka ➡️ [![Patreon](https://img.shields.io/badge/donate-patreon-red.svg)](https://www.patreon.com/user?u=5787198) [![Donate](https://img.shields.io/badge/donate-alipay-orange.svg)](http://7xpdnl.dl1.z0.glb.clouddn.com/T1v4huXnleXXXXXXXX.png) )
+
 
 ![code](https://user-images.githubusercontent.com/17692058/73235382-e5b29b00-4153-11ea-98ac-3f288ee41780.png)
 
