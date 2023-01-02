@@ -20,7 +20,7 @@
 		"object-assign": "^4.1.1",
 		"opentype.js": "^1.3.3",
 		"otfcc-ttcize": "^0.8.0",
-		"parcel": "^1.12.3",
+		"parcel": "^2.8.2",
 		"primitive-quadify-off-curves": "^0.4.0",
 		"toml": "^2.3.2",
 		"topsort": "0.0.2",
