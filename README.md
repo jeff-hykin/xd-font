@@ -6,7 +6,7 @@
 
 ![code](https://user-images.githubusercontent.com/17692058/73235382-e5b29b00-4153-11ea-98ac-3f288ee41780.png)
 
-Note: Ligatures auto-change depending on the programming language
+
 ![Ligations Sample](images/ligset-calt-1.png)
 
 # How do I use it?
